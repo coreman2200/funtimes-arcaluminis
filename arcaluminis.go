@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"image/color"
 	"log"
 	"math"
+	"os"
+	"os/signal"
+	"sync"
 	"time"
 
 	"github.com/coreman2200/funtimes-arcaluminis/model"
@@ -22,14 +27,27 @@ func main() {
 
 	quit := make(chan bool)
 
-	go func() {
+	ctx := context.Background()
+
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	// trap Ctrl+C and call cancel on the context
+	ctx, cancel := context.WithCancel(ctx)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	defer func() {
+		signal.Stop(c)
+		cancel()
+	}()
+
+	go func(cc context.Context) {
 		start := time.Now()
 
 		delta := time.Millisecond / time.Duration(DFLT_FPS)
 		ticker := time.NewTicker(delta)
 
 		for {
-
 			select {
 			case <-ticker.C:
 				t := time.Now()
@@ -50,18 +68,28 @@ func main() {
 
 			case <-quit:
 				ticker.Stop()
+				cancel()
+				wg.Done()
+				return
+
+			case sig := <-c:
+				fmt.Printf("Got %s signal. Aborting...\n", sig)
+				ticker.Stop()
+				cancel()
+				wg.Done()
+				return
+
+			case <-cc.Done():
+				ticker.Stop()
+				cancel()
+				wg.Done()
 				return
 			}
 
 		}
-	}()
+	}(ctx)
 
-	time.Sleep(10 * time.Second)
-
-	log.Println("stopping ticker...")
-	quit <- true
-
-	time.Sleep(500 * time.Millisecond)
+	wg.Wait()
 
 }
 
