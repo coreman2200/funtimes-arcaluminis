@@ -1,52 +1,68 @@
 package main
 
 import (
-	"fmt"
-	"image"
 	"image/color"
 	"log"
+	"math"
+	"time"
 
-	. "github.com/coreman2200/funtimes-arcaluminis/model"
+	"github.com/coreman2200/funtimes-arcaluminis/model"
 
-	"periph.io/x/conn/v3/display"
-	"periph.io/x/conn/v3/physic"
-	"periph.io/x/conn/v3/spi/spireg"
-	"periph.io/x/devices/v3/nrzled"
-	"periph.io/x/extra/devices/screen"
 	"periph.io/x/host/v3"
 )
 
-var Options nrzled.Opts = nrzled.Opts{
-	NumPixels: int(MaxPaneCount) * int(MaxPaneLedStripCount) * int(MaxLedStripLength),
-	Channels:  3,
-	Freq:      2500 * physic.KiloHertz,
-}
+const DFLT_FPS = 30
 
 func main() {
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
 	}
-	d := getLEDs()
-	ss := NewLedStructure()
+	ss := model.NewLedStructure()
+	defer ss.Clear()
 
-	if err := d.Draw(d.Bounds(), ss.Image(), image.Point{}); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("\n")
-}
+	quit := make(chan bool)
 
-func getLEDs() display.Drawer {
-	s, err := spireg.Open("")
-	if err != nil {
-		fmt.Printf("Failed to find a SPI port, printing at the console:\n")
-		return screen.New(100)
-	}
+	go func() {
+		start := time.Now()
 
-	d, err := nrzled.NewSPI(s, &Options)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return d
+		delta := time.Millisecond / time.Duration(DFLT_FPS)
+		ticker := time.NewTicker(delta)
+
+		for {
+
+			select {
+			case <-ticker.C:
+				t := time.Now()
+				duration := t.Sub(start)
+				rad := math.Mod((float64(duration.Milliseconds())*math.Pi)/180.0, 2*math.Pi)
+				//log.Println("Radians: " + strconv.FormatFloat(rad, 'f', -1, 32))
+
+				// Orient, Transform, Scale, Projection..
+				ss.TestManip(rad)
+				ss.Draw()
+
+				//fps := (DFLT_FPS * (float32(delta.Milliseconds())/1000.0))
+				delta = time.Millisecond/time.Duration(DFLT_FPS) - time.Since(t)
+				if delta.Milliseconds() > 0 {
+					ticker.Stop()
+					ticker = time.NewTicker(delta)
+				}
+
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+
+		}
+	}()
+
+	time.Sleep(10 * time.Second)
+
+	log.Println("stopping ticker...")
+	quit <- true
+
+	time.Sleep(500 * time.Millisecond)
+
 }
 
 func colorWheel(h float64) color.NRGBA {

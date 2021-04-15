@@ -34,7 +34,7 @@ func (c *ColorVal) Color() uint32 {
 func (c *ColorVal) ToRGB() color.NRGBA {
 	aa := float64(c.GetA())
 	if aa > float64(MAX_BRIGHTNESS) {
-		aa = float64(MAX_BRIGHTNESS)
+		aa /= aa / float64(MAX_BRIGHTNESS)
 	}
 	aa /= 255.0
 	rr := float64(c.GetR()) * aa
@@ -45,6 +45,7 @@ func (c *ColorVal) ToRGB() color.NRGBA {
 		R: uint8(rr),
 		G: uint8(gg),
 		B: uint8(bb),
+		A: 255,
 	}
 
 	return col
@@ -138,5 +139,3 @@ func WaveBy(v ColorVal, cs ...*Led) {
 		v.Color.val = uint32(int32(cv) + (int32(i) * ww))
 	}
 }
-
-func ShiftTo(cs []ColorChanger)
