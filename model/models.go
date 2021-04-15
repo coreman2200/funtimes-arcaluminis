@@ -301,7 +301,7 @@ func NewLedStructure() *LedStructure {
 }
 
 func (s *LedStructure) initLedDrawer() display.Drawer {
-	ss, err := spireg.Open("")
+	ss, err := spireg.Open("ISH_GPIO_1")
 	if err != nil {
 		fmt.Printf("Failed to find a SPI port, printing at the console:\n")
 		return screen.New(100)
