@@ -52,7 +52,7 @@ func main() {
 			case <-ticker.C:
 				t := time.Now()
 				duration := t.Sub(start)
-				rad := math.Mod((float64(duration.Milliseconds())*math.Pi)/180.0, 2*math.Pi)
+				rad := math.Mod((float64((duration.Milliseconds())/180.0) * math.Pi), 2*math.Pi)
 				//log.Println("Radians: " + strconv.FormatFloat(rad, 'f', -1, 32))
 
 				// Orient, Transform, Scale, Projection..
