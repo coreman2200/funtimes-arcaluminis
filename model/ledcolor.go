@@ -31,6 +31,10 @@ func (c *ColorVal) Color() uint32 {
 	return c.val
 }
 
+func (c *ColorVal) ToRGBA() color.RGBA {
+	return color.RGBA{c.GetR(), c.GetG(), c.GetB(), c.GetA()}
+}
+
 func (c *ColorVal) ToRGB() color.NRGBA {
 	aa := float64(c.GetA())
 	if aa > float64(MAX_BRIGHTNESS) {
@@ -116,15 +120,18 @@ type ColorChanger interface {
 	ScaleColor(float32)
 }
 
-func FadeTo(v ColorVal, cs ...*Led) {
+func FadeTo(a uint8, cs ...*Led) {
 	l := len(cs)
 
-	vv := int32(v.val)
-	fr := (vv - int32(cs[0].baseColor.val)) / int32(l)
+	//vv := int32(v.val)
+	fa := 255 / int32(l)
 
 	for i, v := range cs {
-		cv := v.baseColor.val
-		v.Color.val = uint32(int32(cv) + (int32(i) * fr))
+		cv := v.Color
+		fd := 255 - int(fa)*i
+		aa := math.Min(float64(cv.GetA()), float64(fd))
+		v.Color.SetA(uint8(aa))
+
 	}
 }
 
