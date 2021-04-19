@@ -2,27 +2,27 @@ package model
 
 import (
 	"bytes"
-	"fmt"
 	"image"
-	"log"
 	"math"
 	"sort"
+	"time"
 
-	"periph.io/x/conn/v3/display"
 	"periph.io/x/conn/v3/physic"
-	"periph.io/x/conn/v3/spi/spireg"
-	"periph.io/x/devices/v3/nrzled"
-	"periph.io/x/extra/devices/screen"
 )
 
 const (
 	MaxLedStripLength    uint8            = 26
 	MaxPaneLedStripCount uint8            = 5
-	MaxPaneCount         uint8            = 4  // should be 5..
-	PaneSize             uint8            = 18 // Corresponds to Physical size (18^2") per panel
+	MaxPaneCount         uint8            = 4   // should be 5..
+	PaneSize             int              = 300 // Corresponds to Physical size (18^2") per panel
 	PanePadding          uint8            = 1
 	RefreshRate          physic.Frequency = 800
 )
+
+type LedRenderer interface {
+	Render()
+	Clear()
+}
 
 type serializable interface {
 	Index() uint8
@@ -35,15 +35,26 @@ type Led struct {
 	row       uint8
 	baseColor ColorVal
 	parent    *LedStrip
+	Props     PhysicalProperties
 }
 
 func NewLed(p *LedStrip, i uint8, r uint8, c uint32) Led {
+	size := p.Props.Width / 2
+	yoff := (p.Props.Height / float32(p.size))
+	xoff := size / 2 // p.Props.XOffset / 2
 	v := Led{
 		index:     i,
 		row:       r,
 		parent:    p,
 		baseColor: NewColor(c),
 		Color:     NewColor(c),
+		Props: PhysicalProperties{
+			Width:   size,
+			Height:  size,
+			XOffset: xoff,
+			YOffset: float32(i)*yoff + p.Props.YOffset,
+			ZOffset: float32(p.parent.index),
+		},
 	}
 
 	return v
@@ -85,9 +96,12 @@ type LedStrip struct {
 	parent    *Pane
 	baseColor ColorVal
 	size      uint8
+	Props     PhysicalProperties
 }
 
 func NewStrip(p *Pane, i uint8, s uint8, d bool, c ColorVal) LedStrip {
+	xoff := float32((p.Props.Width / float32(p.stripCount)))
+	yoff := p.Props.YOffset
 	v := LedStrip{
 		parent:    p,
 		index:     i,
@@ -95,6 +109,13 @@ func NewStrip(p *Pane, i uint8, s uint8, d bool, c ColorVal) LedStrip {
 		baseColor: c,
 		Direction: d,
 		Strip:     make([]*Led, 0),
+		Props: PhysicalProperties{
+			Width:   xoff / 2,
+			Height:  float32(PaneSize),
+			XOffset: (xoff * float32(i)),
+			YOffset: yoff,
+			ZOffset: float32(p.index),
+		},
 	}
 
 	for i := 0; i < int(s); i++ {
@@ -103,6 +124,10 @@ func NewStrip(p *Pane, i uint8, s uint8, d bool, c ColorVal) LedStrip {
 	}
 
 	return v
+}
+
+func (s *LedStrip) BaseColor() ColorVal {
+	return s.baseColor
 }
 
 func (s *LedStrip) Leds() []*Led {
@@ -165,7 +190,7 @@ type Pane struct {
 	LedStrips  []*LedStrip
 	stripCount uint8
 	baseColor  ColorVal
-	Properties PhysicalProperties
+	Props      PhysicalProperties
 }
 
 func NewPane(p *LedStructure, i uint8, c uint8, r bool, b ColorVal) Pane {
@@ -176,6 +201,11 @@ func NewPane(p *LedStructure, i uint8, c uint8, r bool, b ColorVal) Pane {
 		baseColor:  b,
 		Reverse:    r,
 		LedStrips:  make([]*LedStrip, 0),
+		Props: PhysicalProperties{
+			Width:   float32(PaneSize),
+			Height:  float32(PaneSize),
+			ZOffset: (float32(PaneSize) * float32(i)) / float32(p.PanelCount),
+		},
 	}
 
 	for i := 0; i < int(v.stripCount); i++ {
@@ -185,6 +215,10 @@ func NewPane(p *LedStructure, i uint8, c uint8, r bool, b ColorVal) Pane {
 	}
 
 	return v
+}
+
+func (p *Pane) BaseColor() ColorVal {
+	return p.baseColor
 }
 
 func (p *Pane) Image() *image.NRGBA {
@@ -258,13 +292,14 @@ func (p *Pane) sorted() []*LedStrip {
 }
 
 type PhysicalProperties struct {
-	XOffset int
-	YOffset int
-	ZOffset int
-	Padding int
-	Width   uint
-	Height  uint
-	Depth   uint
+	XOffset  float32
+	YOffset  float32
+	ZOffset  float32
+	PaddingX float32
+	PaddingY float32
+	Width    float32
+	Height   float32
+	Depth    float32
 }
 
 type LedStructure struct {
@@ -272,9 +307,9 @@ type LedStructure struct {
 	baseColor  ColorVal
 	panels     []*Pane
 	PanelCount uint8
-	drawer     display.Drawer
+	//drawer     display.Drawer
 	//handle     spi.Port
-	Properties PhysicalProperties
+	Props PhysicalProperties
 }
 
 func NewLedStructure() *LedStructure {
@@ -283,9 +318,10 @@ func NewLedStructure() *LedStructure {
 		baseColor:  NewColor(DFLT_COLOR_INIT),
 		panels:     make([]*Pane, 0),
 		PanelCount: MaxPaneCount,
-		Properties: PhysicalProperties{
-			Width:  uint(PaneSize),
-			Height: uint(PaneSize),
+		Props: PhysicalProperties{
+			Width:  float32(PaneSize),
+			Height: float32(PaneSize),
+			Depth:  float32(PaneSize),
 		},
 	}
 
@@ -295,30 +331,7 @@ func NewLedStructure() *LedStructure {
 		v.panels = append(v.panels, &ss)
 	}
 
-	v.drawer = v.initLedDrawer()
-
 	return &v
-}
-
-func (s *LedStructure) initLedDrawer() display.Drawer {
-	ss, err := spireg.Open("")
-	if err != nil {
-		fmt.Printf("Failed to find a SPI port, printing at the console:\n")
-		return screen.New(100)
-	}
-
-	var Options nrzled.Opts = nrzled.Opts{
-		NumPixels: len(s.Leds()),
-		Channels:  3,
-		Freq:      ((RefreshRate * 3) + 100) * physic.KiloHertz,
-	}
-
-	d, err := nrzled.NewSPI(ss, &Options)
-	if err != nil {
-		log.Fatal(err)
-	}
-	d.Halt()
-	return d
 }
 
 func (s *LedStructure) Image() *image.NRGBA {
@@ -377,6 +390,14 @@ func (s *LedStructure) Serialize() []byte {
 	return buf.Bytes()
 }
 
+func (s *LedStructure) Update(t time.Duration) {
+	nms := float64(t.Milliseconds()) / 1000
+	rad := float64(360*nms/180.0) * math.Pi
+
+	// Orient, Transform, Scale, Projection..
+	s.TestManip(rad)
+}
+
 func (s *LedStructure) TestManip(rad float64) {
 	for i, v := range s.panels {
 		mm := math.Mod(float64(i), 3)
@@ -399,16 +420,16 @@ func (s *LedStructure) TestManip(rad float64) {
 		v.SetColor(col)
 
 		for ii, vv := range v.LedStrips {
-			FadeTo(NewColor(0), vv.Strip...)
-
-			aa := NewColor(0x44000000)
+			aa := NewColor(0xAA000000)
 			vv.ColorF(func(c ColorVal, cs ...*Led) {
 				d := float64(1) / float64(v.stripCount)
 
+				ll := 1 / float64(len(cs))
 				for in, cc := range cs {
-					rate := 2.0 / float64(i+1) // per panel..
-					offset := ((float64(ii) * d) + 2*float64(in)) / float64(2*math.Pi)
-					delta := (rate * rad) + offset
+					rate := 1 / float64(i+1) // per panel..
+					poff := float64(ii) * (d * float64(2*math.Pi))
+					ioff := float64(in) * ll * 2 * math.Pi
+					delta := (rate * rad) + poff + ioff
 					diffA := (math.Cos(delta) * float64(aa.GetA()))
 					oldA := cc.Color.GetA()
 					val := math.Max(0, math.Min(255, float64(oldA)-diffA))
@@ -416,23 +437,14 @@ func (s *LedStructure) TestManip(rad float64) {
 
 				}
 			})
+
+			FadeTo(0, vv.Strip...)
 		}
 	}
 }
 
-func (s *LedStructure) Draw() {
-	if err := s.drawer.Draw(s.drawer.Bounds(), s.Image(), image.Point{}); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("\n")
-
-}
-
 func (s *LedStructure) Clear() {
 	s.SetColor(NewColor(0))
-	if err := s.drawer.Halt(); err != nil {
-		log.Fatal(err)
-	}
 }
 
 // 3D Scene Structures
