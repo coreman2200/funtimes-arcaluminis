@@ -3,6 +3,7 @@ module github.com/coreman2200/funtimes-arcaluminis
 go 1.16
 
 require (
+	github.com/AllenDang/giu v0.5.3
 	github.com/stretchr/testify v1.7.0
 	periph.io/x/conn/v3 v3.6.7
 	periph.io/x/devices/v3 v3.6.9
