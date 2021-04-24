@@ -17,6 +17,7 @@ type Looper struct {
 	quit     chan bool
 	ctx      context.Context
 	cancel   context.CancelFunc
+	ticker   *time.Ticker
 	wg       *sync.WaitGroup
 	c        chan os.Signal
 	start    time.Time
@@ -26,13 +27,13 @@ type Looper struct {
 
 func (l *Looper) refresh() {
 	delta := 1000 * time.Millisecond / time.Duration(DFLT_FPS)
-	ticker := time.NewTicker(delta)
+	l.ticker = time.NewTicker(delta)
 
 	fd := float32(delta)
 
 	for {
 		select {
-		case <-ticker.C:
+		case <-l.ticker.C:
 			t := time.Now()
 			duration := t.Sub(l.start)
 			l.leds.Update(duration)
@@ -41,31 +42,32 @@ func (l *Looper) refresh() {
 			//fps := (float32(delta) / fd) * DFLT_FPS
 			delta = time.Duration(fd) - time.Since(t)
 			if delta.Milliseconds() > 0 {
-				ticker.Stop()
-				ticker = time.NewTicker(delta)
+				l.ticker.Stop()
+				l.ticker = time.NewTicker(delta)
 			}
 
 		case <-l.quit:
-			ticker.Stop()
-			l.cancel()
-			l.wg.Done()
+			l.Quit()
 			return
 
 		case sig := <-l.c:
 			fmt.Printf("Got %s signal. Aborting...\n", sig)
-			ticker.Stop()
-			l.cancel()
-			l.wg.Done()
+			l.Quit()
 			return
 
 		case <-l.ctx.Done():
-			ticker.Stop()
-			l.cancel()
-			l.wg.Done()
+			l.Quit()
 			return
 		}
 
 	}
+}
+
+func (l *Looper) Quit() {
+	l.ticker.Stop()
+	l.renderer.drawer.Halt()
+	l.cancel()
+	l.wg.Done()
 }
 
 func InitSPILooper(s *model.LedStructure) (Looper, bool) {
