@@ -1,0 +1,15 @@
+[Unit]
+Description=LED Cube Server (PWM)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/opt/ledcube
+ExecStart=/opt/ledcube/ledcube -driver=pwm -addr=:8080
+Restart=on-failure
+User=pi
+Environment=LED_BRIGHTNESS=0.7
+LimitRTPRIO=50
+
+[Install]
+WantedBy=multi-user.target

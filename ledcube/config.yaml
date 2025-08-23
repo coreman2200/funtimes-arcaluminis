@@ -1,0 +1,17 @@
+driver: sim
+gpio: 18
+color_order: GRB
+brightness: 0.8
+fps: 60
+dim:
+    x: 5
+    "y": 26
+    z: 5
+pitch_mm: 17.6
+panel_gap_mm: 50
+x_flip_every_row: true
+y_flip_every_panel: false
+power:
+    limit_amps: 35
+    white_cap: 0.85
+    soft_start_ms: 800

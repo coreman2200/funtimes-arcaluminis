@@ -1,0 +1,917 @@
+	line  26:      unnamed       unused   input  active-high
+	line  27:      unnamed       unused  output  active-high
+	line  28:      unnamed       unused   input  active-high
+	line  29:      unnamed       unused   input  active-high
+	line  30:      unnamed       unused   input  active-high
+	line  31:      unnamed       unused   input  active-high
+	line  32:      unnamed       unused   input  active-high
+	line  33:      unnamed       unused   input  active-high
+	line  34:      unnamed       unused   input  active-high
+	line  35:      unnamed       unused   input  active-high
+	line  36:      unnamed       unused   input  active-high
+	line  37:      unnamed       unused   input  active-high
+	line  38:      unnamed       unused   input  active-high
+	line  39:      unnamed       unused   input  active-high
+	line  40:      unnamed       unused   input  active-high
+	line  41:      unnamed       unused   input  active-high
+	line  42:      unnamed       unused   input  active-high
+	line  43:      unnamed       unused   input  active-high
+	line  44:      unnamed       unused   input  active-high
+	line  45:      unnamed       unused   input  active-high
+	line  46:      unnamed       unused   input  active-high
+	line  47:      unnamed       unused  output  active-high
+	line  48:      unnamed       unused   input  active-high
+	line  49:      unnamed       unused   input  active-high
+	line  50:      unnamed       unused  output  active-high
+	line  51:      unnamed       unused   input  active-high
+	line  52:      unnamed       unused  output  active-high
+	line  53:      unnamed       unused   input  active-high
+	line  54:      unnamed       unused   input  active-high
+	line  55:      unnamed       unused  output  active-high
+	line  56:      unnamed       unused   input  active-high
+	line  57:      unnamed       unused   input  active-high
+	line  58:      unnamed       unused   input  active-high
+	line  59:      unnamed       unused   input  active-high
+	line  60:      unnamed       unused   input  active-high
+	line  61:      unnamed       unused   input  active-high
+	line  62:      unnamed       unused   input  active-high
+	line  63:      unnamed       unused   input  active-high
+	line  64:      unnamed       unused   input  active-high
+	line  65:      unnamed       unused   input  active-high
+	line  66:      unnamed       unused   input  active-high
+	line  67:      unnamed       unused   input  active-high
+	line  68:      unnamed       unused   input  active-high
+	line  69:      unnamed       unused   input  active-high
+	line  70:      unnamed       unused   input  active-high
+	line  71:      unnamed       unused   input  active-high
+	line  72:      unnamed       unused   input  active-high
+gpiochip2 - 27 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused  output  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused   input  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed       unused   input  active-high
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed       unused   input  active-high
+	line  16:      unnamed       unused  output  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused  output  active-high
+	line  19:      unnamed       unused  output  active-high
+	line  20:      unnamed       unused  output  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused  output  active-high
+	line  23:      unnamed       unused   input  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+gpiochip3 - 86 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused   input  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused   input  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed       unused   input  active-high
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed       unused   input  active-high
+	line  16:      unnamed       unused   input  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused   input  active-high
+	line  19:      unnamed       unused   input  active-high
+	line  20:      unnamed       unused   input  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused   input  active-high
+	line  23:      unnamed       unused   input  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+	line  27:      unnamed       unused   input  active-high
+	line  28:      unnamed       unused   input  active-high
+	line  29:      unnamed       unused   input  active-high
+	line  30:      unnamed       unused   input  active-high
+	line  31:      unnamed       unused   input  active-high
+	line  32:      unnamed       unused   input  active-high
+	line  33:      unnamed       unused   input  active-high
+	line  34:      unnamed       unused   input  active-high
+	line  35:      unnamed       unused   input  active-high
+	line  36:      unnamed       unused   input  active-high
+	line  37:      unnamed       unused   input  active-high
+	line  38:      unnamed       unused   input  active-high
+	line  39:      unnamed       unused   input  active-high
+	line  40:      unnamed       unused   input  active-high
+	line  41:      unnamed       unused   input  active-high
+	line  42:      unnamed       unused   input  active-high
+	line  43:      unnamed       unused   input  active-high
+	line  44:      unnamed       unused   input  active-high
+	line  45:      unnamed       unused   input  active-high
+	line  46:      unnamed       unused   input  active-high
+	line  47:      unnamed       unused   input  active-high
+	line  48:      unnamed       unused   input  active-high
+	line  49:      unnamed       unused   input  active-high
+	line  50:      unnamed       unused   input  active-high
+	line  51:      unnamed       unused   input  active-high
+	line  52:      unnamed       unused   input  active-high
+	line  53:      unnamed       unused   input  active-high
+	line  54:      unnamed       unused   input  active-high
+	line  55:      unnamed       unused   input  active-high
+	line  56:      unnamed       unused   input  active-high
+	line  57:      unnamed       unused   input  active-high
+	line  58:      unnamed       unused   input  active-high
+	line  59:      unnamed       unused   input  active-high
+	line  60:      unnamed       unused   input  active-high
+	line  61:      unnamed       unused   input  active-high
+	line  62:      unnamed       unused   input  active-high
+	line  63:      unnamed       unused   input  active-high
+	line  64:      unnamed       unused   input  active-high
+	line  65:      unnamed       unused   input  active-high
+	line  66:      unnamed       unused   input  active-high
+	line  67:      unnamed       unused   input  active-high
+	line  68:      unnamed       unused   input  active-high
+	line  69:      unnamed       unused   input  active-high
+	line  70:      unnamed       unused   input  active-high
+	line  71:      unnamed       unused   input  active-high
+	line  72:      unnamed       unused   input  active-high
+	line  73:      unnamed       unused   input  active-high
+	line  74:      unnamed       unused   input  active-high
+	line  75:      unnamed       unused   input  active-high
+	line  76:      unnamed       unused   input  active-high
+	line  77:      unnamed       unused   input  active-high
+	line  78:      unnamed       unused   input  active-high
+	line  79:      unnamed       unused   input  active-high
+	line  80:      unnamed       unused   input  active-high
+	line  81:      unnamed       unused   input  active-high
+	line  82:      unnamed       unused   input  active-high
+	line  83:      unnamed       unused   input  active-high
+	line  84:      unnamed       unused   input  active-high
+	line  85:      unnamed       unused   input  active-high
+gpiochip4 - 3 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed "ACPI:Event"   input  active-high [used]
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo gpiodetect
+gpiochip0 [INT33FF:00] (98 lines)
+gpiochip1 [INT33FF:01] (73 lines)
+gpiochip2 [INT33FF:02] (27 lines)
+gpiochip3 [INT33FF:03] (86 lines)
+gpiochip4 [INT0002 Virtual GPIO] (3 lines)
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo systemd services spi-gpio-custom.service
+Excess arguments.
+atomicpi@localhost:~/git/funtimes-arcaluminis$ systemd services spi-gpio-custom.service
+Excess arguments.
+atomicpi@localhost:~/git/funtimes-arcaluminis$ systemd services
+Excess arguments.
+atomicpi@localhost:~/git/funtimes-arcaluminis$ systemd
+Failed to create /user.slice/user-1000.slice/session-5.scope/init.scope control group: Permission denied
+Failed to allocate manager object: Permission denied
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo systemd
+Trying to run as user instance, but $XDG_RUNTIME_DIR is not set.
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo grep spi-gpio-custom.service
+^[[D^C
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo gpioinfo
+gpiochip0 - 98 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused   input  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused   input  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed       unused   input  active-high
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed       unused   input  active-high
+	line  16:      unnamed       unused   input  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused   input  active-high
+	line  19:      unnamed       unused   input  active-high
+	line  20:      unnamed       unused   input  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused   input  active-high
+	line  23:      unnamed       unused   input  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+	line  27:      unnamed       unused   input  active-high
+	line  28:      unnamed       unused   input  active-high
+	line  29:      unnamed       unused   input  active-high
+	line  30:      unnamed       unused   input  active-high
+	line  31:      unnamed       unused   input  active-high
+	line  32:      unnamed       unused   input  active-high
+	line  33:      unnamed       unused   input  active-high
+	line  34:      unnamed       unused   input  active-high
+	line  35:      unnamed       unused   input  active-high
+	line  36:      unnamed       unused   input  active-high
+	line  37:      unnamed       unused   input  active-high
+	line  38:      unnamed       unused   input  active-high
+	line  39:      unnamed       unused   input  active-high
+	line  40:      unnamed       unused   input  active-high
+	line  41:      unnamed       unused   input  active-high
+	line  42:      unnamed       unused   input  active-high
+	line  43:      unnamed       unused   input  active-high
+	line  44:      unnamed       unused   input  active-high
+	line  45:      unnamed       unused   input  active-high
+	line  46:      unnamed       unused   input  active-high
+	line  47:      unnamed       unused   input  active-high
+	line  48:      unnamed       unused   input  active-high
+	line  49:      unnamed       unused   input  active-high
+	line  50:      unnamed       unused   input  active-high
+	line  51:      unnamed       unused   input  active-high
+	line  52:      unnamed       unused   input  active-high
+	line  53:      unnamed       unused   input  active-high
+	line  54:      unnamed       unused   input  active-high
+	line  55:      unnamed       unused   input  active-high
+	line  56:      unnamed       unused   input  active-high
+	line  57:      unnamed       unused   input  active-high
+	line  58:      unnamed       unused   input  active-high
+	line  59:      unnamed       unused   input  active-high
+	line  60:      unnamed       unused   input  active-high
+	line  61:      unnamed       unused  output  active-high
+	line  62:      unnamed        "sda"  output  active-high [used open-drain]
+	line  63:      unnamed       unused   input  active-high
+	line  64:      unnamed       unused   input  active-high
+	line  65:      unnamed       unused   input  active-high
+	line  66:      unnamed        "scl"  output  active-high [used open-drain]
+	line  67:      unnamed       unused   input  active-high
+	line  68:      unnamed       unused   input  active-high
+	line  69:      unnamed       unused   input  active-high
+	line  70:      unnamed       unused   input  active-high
+	line  71:      unnamed       unused   input  active-high
+	line  72:      unnamed       unused   input  active-high
+	line  73:      unnamed       unused   input  active-high
+	line  74:      unnamed       unused   input  active-high
+	line  75:      unnamed       unused   input  active-high
+	line  76:      unnamed       unused   input  active-high
+	line  77:      unnamed       unused   input  active-high
+	line  78:      unnamed       unused  output  active-high
+	line  79:      unnamed       unused   input  active-high
+	line  80:      unnamed       unused   input  active-high
+	line  81:      unnamed       unused   input  active-high
+	line  82:      unnamed       unused   input  active-high
+	line  83:      unnamed       unused   input  active-high
+	line  84:      unnamed       unused   input  active-high
+	line  85:      unnamed       unused   input  active-high
+	line  86:      unnamed       unused   input  active-high
+	line  87:      unnamed       unused   input  active-high
+	line  88:      unnamed       unused   input  active-high
+	line  89:      unnamed       unused   input  active-high
+	line  90:      unnamed       unused   input  active-high
+	line  91:      unnamed       unused   input  active-high
+	line  92:      unnamed       unused   input  active-high
+	line  93:      unnamed       unused  output  active-high
+	line  94:      unnamed       unused   input  active-high
+	line  95:      unnamed       unused   input  active-high
+	line  96:      unnamed       unused   input  active-high
+	line  97:      unnamed       unused   input  active-high
+gpiochip1 - 73 lines:
+	line   0:      unnamed    "gpioset"  output  active-high [used]
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused   input  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused  output  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed    "gpioset"  output  active-high [used]
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed  "interrupt"   input  active-high [used]
+	line  16:      unnamed       unused   input  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused   input  active-high
+	line  19:      unnamed       unused   input  active-high
+	line  20:      unnamed       unused   input  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused   input  active-high
+	line  23:      unnamed       unused  output  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+	line  27:      unnamed       unused  output  active-high
+	line  28:      unnamed       unused   input  active-high
+	line  29:      unnamed       unused   input  active-high
+	line  30:      unnamed       unused   input  active-high
+	line  31:      unnamed       unused   input  active-high
+	line  32:      unnamed       unused   input  active-high
+	line  33:      unnamed       unused   input  active-high
+	line  34:      unnamed       unused   input  active-high
+	line  35:      unnamed       unused   input  active-high
+	line  36:      unnamed       unused   input  active-high
+	line  37:      unnamed       unused   input  active-high
+	line  38:      unnamed       unused   input  active-high
+	line  39:      unnamed       unused   input  active-high
+	line  40:      unnamed       unused   input  active-high
+	line  41:      unnamed       unused   input  active-high
+	line  42:      unnamed       unused   input  active-high
+	line  43:      unnamed       unused   input  active-high
+	line  44:      unnamed       unused   input  active-high
+	line  45:      unnamed       unused   input  active-high
+	line  46:      unnamed       unused   input  active-high
+	line  47:      unnamed       unused  output  active-high
+	line  48:      unnamed       unused   input  active-high
+	line  49:      unnamed       unused   input  active-high
+	line  50:      unnamed       unused  output  active-high
+	line  51:      unnamed       unused   input  active-high
+	line  52:      unnamed       unused  output  active-high
+	line  53:      unnamed       unused   input  active-high
+	line  54:      unnamed       unused   input  active-high
+	line  55:      unnamed       unused  output  active-high
+	line  56:      unnamed       unused   input  active-high
+	line  57:      unnamed       unused   input  active-high
+	line  58:      unnamed       unused   input  active-high
+	line  59:      unnamed       unused   input  active-high
+	line  60:      unnamed       unused   input  active-high
+	line  61:      unnamed       unused   input  active-high
+	line  62:      unnamed       unused   input  active-high
+	line  63:      unnamed       unused   input  active-high
+	line  64:      unnamed       unused   input  active-high
+	line  65:      unnamed       unused   input  active-high
+	line  66:      unnamed       unused   input  active-high
+	line  67:      unnamed       unused   input  active-high
+	line  68:      unnamed       unused   input  active-high
+	line  69:      unnamed       unused   input  active-high
+	line  70:      unnamed       unused   input  active-high
+	line  71:      unnamed       unused   input  active-high
+	line  72:      unnamed       unused   input  active-high
+gpiochip2 - 27 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused  output  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused   input  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed       unused   input  active-high
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed       unused   input  active-high
+	line  16:      unnamed       unused  output  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused  output  active-high
+	line  19:      unnamed       unused  output  active-high
+	line  20:      unnamed       unused  output  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused  output  active-high
+	line  23:      unnamed       unused   input  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+gpiochip3 - 86 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed       unused   input  active-high
+	line   3:      unnamed       unused   input  active-high
+	line   4:      unnamed       unused   input  active-high
+	line   5:      unnamed       unused   input  active-high
+	line   6:      unnamed       unused   input  active-high
+	line   7:      unnamed       unused   input  active-high
+	line   8:      unnamed       unused   input  active-high
+	line   9:      unnamed       unused   input  active-high
+	line  10:      unnamed       unused   input  active-high
+	line  11:      unnamed       unused   input  active-high
+	line  12:      unnamed       unused   input  active-high
+	line  13:      unnamed       unused   input  active-high
+	line  14:      unnamed       unused   input  active-high
+	line  15:      unnamed       unused   input  active-high
+	line  16:      unnamed       unused   input  active-high
+	line  17:      unnamed       unused   input  active-high
+	line  18:      unnamed       unused   input  active-high
+	line  19:      unnamed       unused   input  active-high
+	line  20:      unnamed       unused   input  active-high
+	line  21:      unnamed       unused   input  active-high
+	line  22:      unnamed       unused   input  active-high
+	line  23:      unnamed       unused   input  active-high
+	line  24:      unnamed       unused   input  active-high
+	line  25:      unnamed       unused   input  active-high
+	line  26:      unnamed       unused   input  active-high
+	line  27:      unnamed       unused   input  active-high
+	line  28:      unnamed       unused   input  active-high
+	line  29:      unnamed       unused   input  active-high
+	line  30:      unnamed       unused   input  active-high
+	line  31:      unnamed       unused   input  active-high
+	line  32:      unnamed       unused   input  active-high
+	line  33:      unnamed       unused   input  active-high
+	line  34:      unnamed       unused   input  active-high
+	line  35:      unnamed       unused   input  active-high
+	line  36:      unnamed       unused   input  active-high
+	line  37:      unnamed       unused   input  active-high
+	line  38:      unnamed       unused   input  active-high
+	line  39:      unnamed       unused   input  active-high
+	line  40:      unnamed       unused   input  active-high
+	line  41:      unnamed       unused   input  active-high
+	line  42:      unnamed       unused   input  active-high
+	line  43:      unnamed       unused   input  active-high
+	line  44:      unnamed       unused   input  active-high
+	line  45:      unnamed       unused   input  active-high
+	line  46:      unnamed       unused   input  active-high
+	line  47:      unnamed       unused   input  active-high
+	line  48:      unnamed       unused   input  active-high
+	line  49:      unnamed       unused   input  active-high
+	line  50:      unnamed       unused   input  active-high
+	line  51:      unnamed       unused   input  active-high
+	line  52:      unnamed       unused   input  active-high
+	line  53:      unnamed       unused   input  active-high
+	line  54:      unnamed       unused   input  active-high
+	line  55:      unnamed       unused   input  active-high
+	line  56:      unnamed       unused   input  active-high
+	line  57:      unnamed       unused   input  active-high
+	line  58:      unnamed       unused   input  active-high
+	line  59:      unnamed       unused   input  active-high
+	line  60:      unnamed       unused   input  active-high
+	line  61:      unnamed       unused   input  active-high
+	line  62:      unnamed       unused   input  active-high
+	line  63:      unnamed       unused   input  active-high
+	line  64:      unnamed       unused   input  active-high
+	line  65:      unnamed       unused   input  active-high
+	line  66:      unnamed       unused   input  active-high
+	line  67:      unnamed       unused   input  active-high
+	line  68:      unnamed       unused   input  active-high
+	line  69:      unnamed       unused   input  active-high
+	line  70:      unnamed       unused   input  active-high
+	line  71:      unnamed       unused   input  active-high
+	line  72:      unnamed       unused   input  active-high
+	line  73:      unnamed       unused   input  active-high
+	line  74:      unnamed       unused   input  active-high
+	line  75:      unnamed       unused   input  active-high
+	line  76:      unnamed       unused   input  active-high
+	line  77:      unnamed       unused   input  active-high
+	line  78:      unnamed       unused   input  active-high
+	line  79:      unnamed       unused   input  active-high
+	line  80:      unnamed       unused   input  active-high
+	line  81:      unnamed       unused   input  active-high
+	line  82:      unnamed       unused   input  active-high
+	line  83:      unnamed       unused   input  active-high
+	line  84:      unnamed       unused   input  active-high
+	line  85:      unnamed       unused   input  active-high
+gpiochip4 - 3 lines:
+	line   0:      unnamed       unused   input  active-high
+	line   1:      unnamed       unused   input  active-high
+	line   2:      unnamed "ACPI:Event"   input  active-high [used]
+atomicpi@localhost:~/git/funtimes-arcaluminis$ ls -l /sys/class/gpio
+total 0
+--w------- 1 root root 4096 Apr 15 06:06 export
+lrwxrwxrwx 1 root root    0 Apr 15 13:48 gpiochip225 -> ../../devices/platform/INT0002:00/gpio/gpiochip225
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip228 -> ../../devices/platform/INT33FF:03/gpio/gpiochip228
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip314 -> ../../devices/platform/INT33FF:02/gpio/gpiochip314
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip341 -> ../../devices/platform/INT33FF:01/gpio/gpiochip341
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip414 -> ../../devices/platform/INT33FF:00/gpio/gpiochip414
+--w------- 1 root root 4096 Apr 15 06:06 unexport
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo find /sys -name "*spi*"
+/sys/kernel/tracing/events/spi
+/sys/kernel/tracing/events/spi/spi_controller_idle
+/sys/kernel/tracing/events/spi/spi_controller_busy
+/sys/kernel/tracing/events/spi/spi_message_submit
+/sys/kernel/tracing/events/spi/spi_message_start
+/sys/kernel/tracing/events/spi/spi_message_done
+/sys/kernel/tracing/events/spi/spi_transfer_start
+/sys/kernel/tracing/events/spi/spi_transfer_stop
+/sys/kernel/tracing/events/syscalls/sys_enter_fspick
+/sys/kernel/tracing/events/syscalls/sys_exit_fspick
+/sys/kernel/slab/dentry/cgroup/dentry(953:spi-gpio-custom.service)
+/sys/kernel/slab/ext4_inode_cache/cgroup/ext4_inode_cache(953:spi-gpio-custom.service)
+/sys/kernel/debug/tracing/events/spi
+/sys/kernel/debug/tracing/events/spi/spi_controller_idle
+/sys/kernel/debug/tracing/events/spi/spi_controller_busy
+/sys/kernel/debug/tracing/events/spi/spi_message_submit
+/sys/kernel/debug/tracing/events/spi/spi_message_start
+/sys/kernel/debug/tracing/events/spi/spi_message_done
+/sys/kernel/debug/tracing/events/spi/spi_transfer_start
+
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+<sys/kernel/tracing/events/spi" [Permission Denied]           0,0-1         All
+/sys/kernel/debug/tracing/events/spi/spi_transfer_stop
+/sys/kernel/debug/tracing/events/syscalls/sys_enter_fspick
+" ============================================================================
+" Netrw Directory Listing                                        (netrw v165)
+"   /sys/kernel/tracing/events/spi
+"   Sorted by      name
+"   Sort sequence: [\/]$,\<core\%(\.\d\+\)\=\>,\.h$,\.c$,\.cpp$,\~\=\*$,*,\.o$,\
+"   Quick Help: <F1>:help  -:go up dir  D:delete  R:rename  s:sort-by  x:special
+" ==============================================================================
+../
+./
+spi_controller_busy/
+spi_controller_idle/
+spi_message_done/
+spi_message_start/
+spi_message_submit/
+spi_transfer_start/
+spi_transfer_stop/
+enable
+filter
+~
+~
+~
+~
+~
+~
+"/sys/kernel/tracing/events/spi" is a directory               8,1           All
+        sockets    : =
+
+The filigree also affects the g:netrw_sort_sequence.
+
+
+QUICK HELP                                              netrw-quickhelp {{{2
+                       (Use ctrl-] to select a topic)
+        Intro to Browsing...............................netrw-intro-browse
+          Quick Reference: Maps.........................netrw-quickmap
+          Quick Reference: Commands.....................netrw-browse-cmds
+        Hiding
+          Edit hiding list..............................netrw-ctrl-h
+          Hiding Files or Directories...................netrw-a
+          Hiding/Unhiding by suffix.....................netrw-mh
+          Hiding  dot-files.............................netrw-gh
+        Listing Style
+          Select listing style (thin/long/wide/tree)....netrw-i
+          Reverse sorting order.........................netrw-r
+/sys/kernel/debug/tracing/events/syscalls/sys_exit_fspick
+/sys/class/spidev
+/sys/class/spi_slave
+/sys/class/spi_master
+/sys/class/spi_master/spi2
+/sys/devices/pci0000:00/0000:00:1f.0/intel-spi
+/sys/devices/pci0000:00/8086228E:01/spi_master
+/sys/devices/pci0000:00/8086228E:01/spi_master/spi2
+/sys/devices/pci0000:00/8086228E:01/spi_master/spi2/statistics/spi_async
+/sys/devices/pci0000:00/8086228E:01/spi_master/spi2/statistics/spi_sync_immediate
+/sys/devices/pci0000:00/8086228E:01/spi_master/spi2/statistics/spi_sync
+/sys/bus/platform/devices/intel-spi
+/sys/bus/platform/drivers/pxa2xx-spi
+/sys/bus/spi
+/sys/bus/spi/drivers/spidev
+/sys/module/spidev
+/sys/module/spidev/drivers/spi:spidev
+/sys/module/spi_pxa2xx_platform
+/sys/module/spi_pxa2xx_platform/drivers/platform:pxa2xx-spi
+atomicpi@localhost:~/git/funtimes-arcaluminis$ vim /sys/kernel/tracing/events/spi
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo vim /sys/kernel/tracing/events/spi
+atomicpi@localhost:~/git/funtimes-arcaluminis$
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo palimpsest
+sudo: palimpsest: command not found
+atomicpi@localhost:~/git/funtimes-arcaluminis$ sudo gnome-disks
+sudo: gnome-disks: command not found
+atomicpi@localhost:~/git/funtimes-arcaluminis$ cd /usr/src/spi-gpio-custom-0.1/
+atomicpi@localhost:/usr/src/spi-gpio-custom-0.1$ sudo dkms add spi-gpio-custom-0.1
+Error! Invalid number of arguments passed.
+Usage: add <module>/<module-version> or
+       add -m <module>/<module-version> or
+       add -m <module> -v <module-version>
+atomicpi@localhost:/usr/src/spi-gpio-custom-0.1$ sudo dkms add spi-gpio-custom/0.1
+Error! DKMS tree already contains: spi-gpio-custom-0.1
+You cannot add the same module/version combo more than once.
+atomicpi@localhost:/usr/src/spi-gpio-custom-0.1$ cd ~/
+atomicpi@localhost:~$ ls -a
+.              .local            Documents    Updated
+..             .mozilla          Downloading  Videos
+.Xauthority    .profile          Downloads    butane
+.bash_history  .ssh              Music        doc
+.bash_logout   .vim              New          git
+.bash_profile  .viminfo          Pictures     go
+.bashrc        .xsession-errors  Pouring      go1.16.3.linux-amd64.tar.gz
+.cache         .zshrc            Public       samples
+.config        Auto-updated      Renamed
+.gnupg         Caveats           Summary
+.go            Desktop           Templates
+atomicpi@localhost:~$ ./samples/
+-bash: ./samples/: Is a directory
+atomicpi@localhost:~$ ls -l
+total 126052
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Auto-updated
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Caveats
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 14 01:34 Desktop
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Documents
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Downloading
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Downloads
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Music
+import atomicpi
+import gpio as GPIO
+# Control by signal ID
+GPIO_0=atomicpi.signals.ISH_GPIO_0.global_idx
+GPIO.setup(GPIO_0, GPIO.OUT)
+GPIO.output(GPIO_0, True)
+# Control with signal ID lookup on Enchilada connector first
+GREEN_LED=atomicpi.signals[atomicpi.connectors.enchilada.leds.green].global_idx
+GPIO.setup(GREEN_LED, GPIO.OUT)
+GPIO.output(GREEN_LED, False)
+
+GPIO.cleanup(GPIO_0)
+GPIO.cleanup(GREEN_LED)
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+"./samples/gpio-test.py" 13L, 409C                            1,1           All
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 New
+var atomicpi = require("atomicpi");
+var GPIO = require("sysfs-gpio");
+// Control by signal ID
+GPIO.export(atomicpi.signals.ISH_GPIO_0.global_idx, (pin) => {
+   pin.out();
+   pin.high();
+});
+// Control with signal ID lookup on Enchilada connector first
+GPIO.export(atomicpi.signals[atomicpi.connectors.enchilada.leds.green].global_idx, (pin) => {
+   pin.out();
+   pin.low();
+});
+process.stdin.resume();
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+"./samples/gpio-test.js" 13L, 402C                            1,1           All
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Pictures
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Pouring
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Public
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Renamed
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Summary
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Templates
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 Updated
+drwxr-xr-x 2 atomicpi atomicpi      4096 Apr 13 20:33 Videos
+-rw-rw-r-- 1 atomicpi atomicpi         0 Apr 15 03:38 butane
+drwxr-xr-x 3 atomicpi atomicpi      4096 Jan  1  1970 doc
+drwxrwxrwx 3 root     root          4096 Apr 14 00:09 git
+drwxrwxrwx 4 root     root          4096 Apr 15 13:43 go
+-rw-r--r-- 1 atomicpi atomicpi 129021323 Apr 15 03:33 go1.16.3.linux-amd64.tar.gz
+drwxr-xr-x 3 atomicpi atomicpi      4096 Jan  1  1970 samples
+atomicpi@localhost:~$ ls -l ./samples
+total 20
+-rw-r--r-- 1 atomicpi atomicpi  682 Jan  1  1970 bno055-test.js
+-rw-r--r-- 1 atomicpi atomicpi  718 Jan  1  1970 bno055-test.py
+drwxr-xr-x 3 atomicpi atomicpi 4096 Jan  1  1970 camera
+-rw-r--r-- 1 atomicpi atomicpi  402 Jan  1  1970 gpio-test.js
+-rw-r--r-- 1 atomicpi atomicpi  409 Jan  1  1970 gpio-test.py
+# Kernel-visible signals
+
+# ATOMICPI_* constants: Global GPIO index
+# ATOMICPICHIP_* constants: Chip ID " " Index in chip
+# Think gpioget $ATOMICPICHIP_ISH_GPIO_0 (without quotes)
+
+# External GPIO
+ATOMICPI_ISH_GPIO_0=335
+ATOMICPICHIP_ISH_GPIO_0="gpiochip3 21"
+ATOMICPI_ISH_GPIO_1=332
+ATOMICPICHIP_ISH_GPIO_1="gpiochip3 18"
+ATOMICPI_ISH_GPIO_2=338
+ATOMICPICHIP_ISH_GPIO_2="gpiochip3 24"
+ATOMICPI_ISH_GPIO_3=329
+ATOMICPICHIP_ISH_GPIO_3="gpiochip3 15"
+ATOMICPI_ISH_GPIO_4=336
+ATOMICPICHIP_ISH_GPIO_4="gpiochip3 22"
+ATOMICPI_ISH_GPIO_7=330
+ATOMICPICHIP_ISH_GPIO_7="gpiochip3 16"
+
+# Volume up pin
+ATOMICPI_GPIO_DFX_2=348
+ATOMICPICHIP_GPIO_DFX_2="gpiochip1 7"
+# Volume down pin
+"/usr/lib/atomicpi.sh" 78L, 2213C                             1,1           Top
+# Kernel-visible signals
+
+# ATOMICPI_* constants: Global GPIO index
+# ATOMICPICHIP_* constants: Chip ID " " Index in chip
+# Think gpioget $ATOMICPICHIP_ISH_GPIO_0 (without quotes)
+
+# External GPIO
+ATOMICPI_ISH_GPIO_0=335
+ATOMICPICHIP_ISH_GPIO_0="gpiochip3 21"
+ATOMICPI_ISH_GPIO_1=332
+ATOMICPICHIP_ISH_GPIO_1="gpiochip3 18"
+ATOMICPI_ISH_GPIO_2=338
+ATOMICPICHIP_ISH_GPIO_2="gpiochip3 24"
+ATOMICPI_ISH_GPIO_3=329
+ATOMICPICHIP_ISH_GPIO_3="gpiochip3 15"
+ATOMICPI_ISH_GPIO_4=336
+ATOMICPICHIP_ISH_GPIO_4="gpiochip3 22"
+ATOMICPI_ISH_GPIO_7=330
+ATOMICPICHIP_ISH_GPIO_7="gpiochip3 16"
+
+# Volume up pin
+ATOMICPI_GPIO_DFX_2=348
+ATOMICPICHIP_GPIO_DFX_2="gpiochip1 7"
+# Volume down pin
+ATOMICPI_GPIO_DFX_4=346
+ATOMICPICHIP_GPIO_DFX_4="gpiochip1 5"
+
+# Internal signals
+ATOMICPI_I2C2_3P3_SDA=476
+ATOMICPICHIP_I2C2_3P3_SDA="gpiochip0 62"
+ATOMICPI_I2C2_3P3_SCL=480
+ATOMICPICHIP_I2C2_3P3_SCL="gpiochip0 66"
+ATOMICPI_AU_MIC_SEL=341
+ATOMICPICHIP_AU_MIC_SEL="gpiochip1 0"
+ATOMICPI_XMOS_RESET=349
+ATOMICPICHIP_XMOS_RESET="gpiochip1 8"
+ATOMICPI_BN_INT=358
+ATOMICPICHIP_BN_INT="gpiochip1 17"
+ATOMICPI_BN_RESET=366
+ATOMICPICHIP_BN_RESET="gpiochip1 25"
+
+# Physical connector descriptions
+# 26-pin connector interface
+ATOMICPICONN_ISH_GPIO_0=24
+ATOMICPICONN_ISH_GPIO_1=25
+ATOMICPICONN_ISH_GPIO_2=26
+ATOMICPICONN_ISH_GPIO_3=18
+ATOMICPICONN_ISH_GPIO_4=19
+ATOMICPICONN_ISH_GPIO_7=20
+# Enchilada breakout board
+ATOMICPIENCHCONN_ISH_GPIO_0=9
+ATOMICPIENCHCONN_ISH_GPIO_1=10
+ATOMICPIENCHCONN_ISH_GPIO_2=11
+ATOMICPIENCHCONN_ISH_GPIO_3=3
+atomicpi@localhost:~$ sudo vim ./samples/gpio-test.py
+atomicpi@localhost:~$ sudo vim ./samples/gpio-test.js
+atomicpi@localhost:~$ sudo vim /usr/lib/atomicpi.sh
+.Xauthority                  Documents/
+.bash_history                Downloading
+.bash_logout                 Downloads/
+.bash_profile                Music/
+.bashrc                      New
+.cache/                      Pictures/
+.config/                     Pouring
+.gnupg/                      Public/
+.go/                         Renamed
+.local/                      Summary
+.mozilla/                    Templates/
+.profile                     Updated
+.ssh/                        Videos/
+.vim/                        butane
+.viminfo                     doc/
+.xsession-errors             git/
+.zshrc                       go/
+Auto-updated                 go1.16.3.linux-amd64.tar.gz
+Caveats                      samples/
+Desktop/
+atomicpi@localhost:~$ sudo vim /usr/lib/atomicpi.sh
+atomicpi@localhost:~$ sudo sh /usr/lib/atomicpi.sh
+atomicpi@localhost:~$ sudo sh /usr/lib/atomicpi.sh atomicpi_gpio_hardware
+atomicpi@localhost:~$ sh /usr/lib/atomicpi.sh/atomicpi_gpio_hardware
+sh: 0: Can't open /usr/lib/atomicpi.sh/atomicpi_gpio_hardware
+atomicpi@localhost:~$ sh /usr/lib/atomicpi.sh atomicpi_gpio_hardware
+atomicpi@localhost:~$ sh /usr/lib/atomicpi.sh
+atomicpi@localhost:~$ sudo systemctl enable spi-gpio-custom && sudo systemctl start spi-gpio-custom
+atomicpi@localhost:~$ modprobe spidev
+atomicpi@localhost:~$ ls -l /sys/class/gpio
+total 0
+--w------- 1 root root 4096 Apr 15 06:06 export
+lrwxrwxrwx 1 root root    0 Apr 15 13:48 gpiochip225 -> ../../devices/platform/INT0002:00/gpio/gpiochip225
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip228 -> ../../devices/platform/INT33FF:03/gpio/gpiochip228
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip314 -> ../../devices/platform/INT33FF:02/gpio/gpiochip314
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip341 -> ../../devices/platform/INT33FF:01/gpio/gpiochip341
+lrwxrwxrwx 1 root root    0 Apr 15 06:06 gpiochip414 -> ../../devices/platform/INT33FF:00/gpio/gpiochip414
+--w------- 1 root root 4096 Apr 15 06:06 unexport
+atomicpi@localhost:~$ sudo lsmod |grep spi
+spidev                 24576  0
+spi_pxa2xx_platform    28672  0
+atomicpi@localhost:~$ dtc -Ifs /proc/device-tree
+/dts-v1/;
+
+/ {
+
+	gpiochip-stub-341 {
+		gpiochip-stub,base = [33 34 31];
+		gpiochip-stub,label = "INT33FF:01";
+		phandle = <0x04>;
+		#gpio-cells = <0x02>;
+	};
+
+	gpiochip-stub-414 {
+		gpiochip-stub,base = [34 31 34];
+		gpiochip-stub,label = "INT33FF:00";
+		phandle = <0x02>;
+		#gpio-cells = <0x02>;
+	};
+
+	gpiochip-stub-225 {
+		gpiochip-stub,base = [32 32 35];
+		gpiochip-stub,label = "INT0002 Virtual GPIO";
+		phandle = <0x0a>;
+		#gpio-cells = <0x02>;
+	};
+
+	aliases {
+	};
+
+	chosen {
+	};
+
+	gpiochip-stub-314 {
+		gpiochip-stub,base = [33 31 34];
+		gpiochip-stub,label = "INT33FF:02";
+		phandle = <0x06>;
+		#gpio-cells = <0x02>;
+
+
+
+
+
+
+
+
+# Internal Atomic Pi BNO-055 I2C bus, configured to be /dev/i2c-50
+50,476,480
+~
+
+
+~
+"/etc/spi-gpio-custom.d/README" 19L, 914C                     1,1           All
+# Any files placed in this directory will be used as
+# busX=... arguments to the spi-gpio-custom kernel module.
+# Comments are marked with '#'.
+#
+# Argument format is "id,sck,mosi,miso[,<mode>,<maxfreq>,<cs>]*".
+# All argument values must be numeric.
+#
+# * id -      the I2C bus number to be assigned to the custom bus (/dev/spidev-$id);
+#             I2C buses must have unique numbers; ls /dev/spidev-* to see what values
+#             are already taken.
+# * sck -     the global GPIO pin number of the SCK bus line.
+# * mosi -    the global GPIO pin number of the MOSI bus line.
+# * miso -    the global GPIO pin number of the MISO bus line.
+#
+# Each SPI slave is described with its own triple of arguments:
+#
+# * mode -    the SPI mode (0, 1, 2 or 3) to run the slave in;
+# * maxfreq - the maximum clock frequency, in Hz, to use for the slave;
+# * cs -      the global GPIO pin number of the slave's #CS line.
+~
+~
+~
+"/etc/spi-gpio-custom.d/README" 19L, 914C                     13,1          All
+
+
+# Internal Atomic Pi SPI bus, configured to be /dev/spidev-101
+101,329,336,330,0,2500000,335
+101,329,336,1000,0,2500000,1001
+
+insmod spi-gpio-custom bus101=329,336,100,0,2500000,335
+
+insmod spi-gpio-custom bus0=100,329,332,338,0,2500000,336
+
+ systemctl restart spi-gpio-custom.service
+
