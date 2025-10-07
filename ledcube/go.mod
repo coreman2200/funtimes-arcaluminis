@@ -1,6 +1,6 @@
 module github.com/coreman2200/funtimes-arcaluminis/ledcube
 
-go 1.22.2
+go 1.25
 
 require (
 	github.com/gorilla/websocket v1.5.1
