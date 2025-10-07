@@ -10,11 +10,11 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog/log"
 
-	"github.com/example/ledcube-wails/internal/config"
-	diag "github.com/example/ledcube-wails/internal/diagnostics"
-	"github.com/example/ledcube-wails/internal/layout"
-	"github.com/example/ledcube-wails/internal/led"
-	"github.com/example/ledcube-wails/internal/tests"
+	"github.com/coreman2200/funtimes-arcaluminis/internal/config"
+	diag "github.com/coreman2200/funtimes-arcaluminis/internal/diagnostics"
+	"github.com/coreman2200/funtimes-arcaluminis/internal/layout"
+	"github.com/coreman2200/funtimes-arcaluminis/internal/led"
+	"github.com/coreman2200/funtimes-arcaluminis/internal/tests"
 )
 
 type State struct {
@@ -242,7 +242,7 @@ func (s *State) saveConfig() {
 			if s.SimOnly {
 				return "sim"
 			}
-			return "pwm"
+			return "spi"
 		}(),
 		GPIO:            18,
 		ColorOrder:      "GRB",
