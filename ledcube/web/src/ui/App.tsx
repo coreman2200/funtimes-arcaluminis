@@ -127,7 +127,7 @@ function WSClient(){
 
 function FirstRun(){
   const [open,setOpen] = React.useState(true)
-  const [driver,setDriver] = React.useState<'sim'|'pwm'>(()=> /Linux|arm/i.test(navigator.userAgent) ? 'pwm' : 'sim')
+  const [driver,setDriver] = React.useState<'sim'|'spi'>(()=> /Linux|arm/i.test(navigator.userAgent) ? 'spi' : 'sim')
   const [x,setX] = React.useState(5), [y,setY] = React.useState(26), [z,setZ] = React.useState(5)
   const [pitch,setPitch] = React.useState(17.6), [gap,setGap] = React.useState(25)
   const apply = ()=>{
@@ -148,6 +148,7 @@ function FirstRun(){
         <div style={{display:'grid', gridTemplateColumns:'auto auto', gap:8}}>
           <label>Driver</label>
           <select value={driver} onChange={e=>setDriver(e.target.value as any)}>
+            <option value="spi">SPI</option>
             <option value="pwm">PWM (GPIO18)</option>
             <option value="sim">Simulator</option>
           </select>
