@@ -148,6 +148,7 @@ func main() {
 		log.Warn().Str("driver", selected).Msg("unknown driver; using SIM")
 		state.Driver = led.NewSim()
 	}
+	state.CurrentDriver = selected
 
 	// ---- HTTP routes ----
 	mux := http.NewServeMux()

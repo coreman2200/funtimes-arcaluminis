@@ -33,7 +33,8 @@ type State struct {
 	clients     map[*websocket.Conn]bool
 	diagClients map[*websocket.Conn]bool
 
-	testRunner *tests.Runner
+	testRunner    *tests.Runner
+	CurrentDriver string
 }
 
 func NewState(l layout.Layout, fps int, brightness float64, simOnly bool) *State {
@@ -270,6 +271,7 @@ func (s *State) sendTopology(conn *websocket.Conn) {
 		"order":      map[string]bool{"xFlipEveryRow": s.Layout.Order.XFlipEveryRow, "yFlipEveryPanel": s.Layout.Order.YFlipEveryPanel},
 		"panelGapMM": s.Layout.PanelGapMM,
 		"pitchMM":    s.Layout.PitchMM,
+		"driver":     s.CurrentDriver,
 	}
 	b, _ := json.Marshal(top)
 	_ = conn.WriteMessage(websocket.TextMessage, b)
