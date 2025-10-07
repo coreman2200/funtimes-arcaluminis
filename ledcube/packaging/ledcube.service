@@ -5,9 +5,11 @@ Wants=network-online.target
 
 [Service]
 WorkingDirectory=/opt/ledcube
-ExecStart=/opt/ledcube/ledcube -driver=spi -addr=:8080
+ExecStart=/opt/ledcube/bin/ledcube -driver=spi -addr=:8080 -config /opt/ledcube/config.yaml
 Restart=on-failure
-User=cory@pi2200
+User=pi
+Group=pi
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 Environment=LED_BRIGHTNESS=0.7
 LimitRTPRIO=50
 
