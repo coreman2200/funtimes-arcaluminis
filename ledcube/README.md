@@ -7,7 +7,7 @@ Runs with or without hardware (use `-sim-only`). Adjustable topology (X/Y/Z, pit
 ```bash
 cd web && npm i && npm run build && cd ..
 go build -o bin/ledcube ./cmd/ledcube
-./bin/ledcube -sim-only -x 5 -y 26 -z 5 -panel-gap-mm 25 -pitch-mm 17.6
+./bin/ledcube -sim-only -x 5 -y 26 -z 5 -panel-gap-mm 50 -pitch-mm 17.6
 # open http://localhost:8080
 ```
 
