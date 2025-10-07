@@ -1,5 +1,4 @@
-driver: sim
-gpio: 18
+driver: spi
 color_order: GRB
 brightness: 0.8
 fps: 60
@@ -10,8 +9,12 @@ dim:
 pitch_mm: 17.6
 panel_gap_mm: 50
 x_flip_every_row: true
-y_flip_every_panel: false
+y_flip_every_panel: true
 power:
     limit_amps: 35
     white_cap: 0.85
-    soft_start_ms: 800
+    soft_start_ms: 250
+spi:
+  dev: /dev/spidev0.0
+  speed_hz: 2400000
+  reset_us: 300

@@ -1,4 +1,3 @@
-
 package config
 
 import (
@@ -19,20 +18,27 @@ type Dim struct {
 	Z int `yaml:"z"`
 }
 
-type Config struct {
-	Driver      string  `yaml:"driver"`   // "pwm" | "sim"
-	GPIO        int     `yaml:"gpio"`
-	ColorOrder  string  `yaml:"color_order"`
-	Brightness  float64 `yaml:"brightness"`
-	FPS         int     `yaml:"fps"`
+type SPI struct {
+	Dev     string `yaml:"dev"`      // e.g. /dev/spidev0.0
+	SpeedHz int    `yaml:"speed_hz"` // e.g. 2400000
+	ResetUs int    `yaml:"reset_us"` // e.g. 300
+}
 
-	Dim        Dim     `yaml:"dim"`
-	PitchMM    float64 `yaml:"pitch_mm"`
-	PanelGapMM float64 `yaml:"panel_gap_mm"`
-	XFlipEveryRow   bool `yaml:"x_flip_every_row"`
-	YFlipEveryPanel bool `yaml:"y_flip_every_panel"`
+type Config struct {
+	Driver     string  `yaml:"driver"` // "pwm" | "sim"
+	GPIO       int     `yaml:"gpio"`
+	ColorOrder string  `yaml:"color_order"`
+	Brightness float64 `yaml:"brightness"`
+	FPS        int     `yaml:"fps"`
+
+	Dim             Dim     `yaml:"dim"`
+	PitchMM         float64 `yaml:"pitch_mm"`
+	PanelGapMM      float64 `yaml:"panel_gap_mm"`
+	XFlipEveryRow   bool    `yaml:"x_flip_every_row"`
+	YFlipEveryPanel bool    `yaml:"y_flip_every_panel"`
 
 	Power PowerCfg `yaml:"power"`
+	SPI   SPI      `yaml:"spi,omitempty"`
 }
 
 func Load(path string) (*Config, error) {
