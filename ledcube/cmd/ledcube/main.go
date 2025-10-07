@@ -11,10 +11,10 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/coreman2200/funtimes-arcaluminis/internal/config"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/layout"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/led"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/ws"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/config"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/layout"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/led"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/ws"
 )
 
 func main() {
@@ -58,7 +58,7 @@ func main() {
 	eColor := *colorOrder
 
 	if cfg != nil {
-		// Dimensions & layout
+		// Dimensions
 		if cfg.Dim.X > 0 {
 			eX = cfg.Dim.X
 		}
@@ -68,16 +68,10 @@ func main() {
 		if cfg.Dim.Z > 0 {
 			eZ = cfg.Dim.Z
 		}
+		// Geometry
 		ePitch = firstNonZeroFloat(cfg.PitchMM, ePitch)
 		eGap = firstNonZeroFloat(cfg.PanelGapMM, eGap)
-		if cfg.Order.XFlipEveryRow {
-			eXFlip = true
-		} else if cfg.Order.XFlipEveryRow == false {
-			// keep flag default if config didn't intend to change? (already handled)
-		}
-		if cfg.Order.YFlipEveryPanel {
-			eYFlip = true
-		}
+
 		// Visuals
 		if cfg.FPS > 0 {
 			eFPS = cfg.FPS
@@ -145,20 +139,10 @@ func main() {
 		}
 
 	case "pwm":
-		gpioNum := *gpio
-		if cfg != nil && cfg.GPIO != 0 {
-			gpioNum = cfg.GPIO
-		}
-		drv, err := led.NewPWM(gpioNum, l.Count(), eColor, eBright)
-		if err != nil {
-			log.Warn().Err(err).
-				Str("driver", "pwm").
-				Int("gpio", gpioNum).
-				Msg("PWM init failed; falling back to SIM")
-			state.Driver = led.NewSim()
-		} else {
-			state.Driver = drv
-		}
+		// Avoid compile errors if PWM isn't built in this snapshot.
+		_ = gpio // keep flag in place without unused warning
+		log.Warn().Msg("driver=pwm requested, but PWM is not compiled in this build; using SIM instead")
+		state.Driver = led.NewSim()
 
 	default:
 		log.Warn().Str("driver", selected).Msg("unknown driver; using SIM")

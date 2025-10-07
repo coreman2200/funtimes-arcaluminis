@@ -10,11 +10,11 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog/log"
 
-	"github.com/coreman2200/funtimes-arcaluminis/internal/config"
-	diag "github.com/coreman2200/funtimes-arcaluminis/internal/diagnostics"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/layout"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/led"
-	"github.com/coreman2200/funtimes-arcaluminis/internal/tests"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/config"
+	diag "github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/diagnostics"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/layout"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/led"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/tests"
 )
 
 type State struct {
