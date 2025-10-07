@@ -1,4 +1,4 @@
-module github.com/example/ledcube-wails
+module github.com/coreman2200/funtimes-arcaluminis/ledcube
 
 go 1.22.2
 
