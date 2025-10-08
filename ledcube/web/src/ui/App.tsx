@@ -34,7 +34,7 @@ function VoxelCube(){
     for (let z=0; z<Z; z++)
      for (let y=0; y<Y; y++)
       for (let x=0; x<X; x++){
-        const px = (x - (X-1)/2) * top.pitchMM / 500
+        const px = (x - (X-1)/2) * top.pitchMM / 200
         const py = (y - (Y-1)/2) * top.pitchMM / 1000
         const pz = (z - (Z-1)/2) * top.panelGapMM / 1000
         pts.push([px,py,pz])
