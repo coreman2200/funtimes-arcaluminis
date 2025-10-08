@@ -12,35 +12,59 @@ type Topology = {
   order?: {xFlipEveryRow:boolean,yFlipEveryPanel:boolean}
 }
 
+// add to your zustand store definition:
 const useStore = create<{
   top: Topology
   colors: Uint8Array
+  isotropicZ: boolean        // Z uses pitch (visual cube per voxel)
+  normalizeCube: boolean     // scale whole cloud to a cube
   setTop: (t:Topology)=>void
   setColors: (c:Uint8Array)=>void
+  setView: (v: Partial<{isotropicZ:boolean; normalizeCube:boolean}>)=>void
 }>(set=> ({
   top: { dim:{x:5,y:26,z:5}, panelGapMM:25, pitchMM:17.6 },
   colors: new Uint8Array(5*26*5*3),
+  isotropicZ: true,
+  normalizeCube: true,
   setTop: (t)=> set({top:t, colors:new Uint8Array(t.dim.x*t.dim.y*t.dim.z*3)}),
-  setColors: (c)=> set({colors:c})
+  setColors: (c)=> set({colors:c}),
+  setView: (v)=> set(v),
 }))
 
 function VoxelCube(){
   const instRef = useRef<THREE.InstancedMesh>(null!)
   const top = useStore(s=>s.top)
   const colors = useStore(s=>s.colors)
-  const positions = useMemo(()=>{
+  const isotropicZ = useStore(s=>s.isotropicZ)
+  const normalizeCube = useStore(s=>s.normalizeCube)
+
+  // Precompute positions in meters
+  const { positions, scaleXYZ } = useMemo(()=>{
     const pts: [number,number,number][] = []
     const {x:X,y:Y,z:Z} = top.dim
+    const stepXY = top.pitchMM
+    const stepZ  = isotropicZ ? top.pitchMM : top.panelGapMM
+
     for (let z=0; z<Z; z++)
-     for (let y=0; y<Y; y++)
-      for (let x=0; x<X; x++){
-        const px = (x - (X-1)/2) * top.pitchMM / 200
-        const py = (y - (Y-1)/2) * top.pitchMM / 1000
-        const pz = (z - (Z-1)/2) * top.panelGapMM / 1000
-        pts.push([px,py,pz])
-      }
-    return pts
-  }, [top])
+      for (let y=0; y<Y; y++)
+        for (let x=0; x<X; x++){
+          const px = (x - (X-1)/2) * stepXY / 1000
+          const py = (y - (Y-1)/2) * stepXY / 1000
+          const pz = (z - (Z-1)/2) * stepZ  / 1000
+          pts.push([px,py,pz])
+        }
+
+    // Normalize to a cube: scale each axis so the outer extents match
+    let scale: [number,number,number] = [1,1,1]
+    if (normalizeCube && X>1 && Y>1 && Z>1){
+      const spanX = (X-1)*stepXY
+      const spanY = (Y-1)*stepXY
+      const spanZ = (Z-1)*stepZ
+      const maxSpan = Math.max(spanX, spanY, spanZ) || 1
+      scale = [maxSpan/spanX || 1, maxSpan/spanY || 1, maxSpan/spanZ || 1]
+    }
+    return { positions: pts, scaleXYZ: scale }
+  }, [top, isotropicZ, normalizeCube])
 
   useFrame(()=>{
     const m = new THREE.Matrix4()
@@ -58,17 +82,25 @@ function VoxelCube(){
     instRef.current.instanceColor.needsUpdate = true
   })
 
+  // Dot size: tie it to pitch so it looks good when normalized
+  const dotRadiusM = Math.max(top.pitchMM, 1) / 1000 * 0.18
+
   return (
-    <instancedMesh ref={instRef} args={[undefined, undefined, positions.length]}>
-      <sphereGeometry args={[0.004, 6, 6]} />
-      <meshBasicMaterial />
-    </instancedMesh>
+    <group scale={scaleXYZ as unknown as [number,number,number]}>
+      <instancedMesh ref={instRef} args={[undefined, undefined, positions.length]}>
+        <sphereGeometry args={[dotRadiusM, 6, 6]} />
+        <meshBasicMaterial />
+      </instancedMesh>
+    </group>
   )
 }
 
 function UI(){
   const top = useStore(s=>s.top)
   const setTop = useStore(s=>s.setTop)
+  const isotropicZ = useStore(s=>s.isotropicZ)
+  const normalizeCube = useStore(s=>s.normalizeCube)
+  const setView = useStore(s=>s.setView)
   const [x,setX]=useState(top.dim.x), [y,setY]=useState(top.dim.y), [z,setZ]=useState(top.dim.z)
   const [gap,setGap]=useState(top.panelGapMM), [pitch,setPitch]=useState(top.pitchMM)
   const apply = ()=> setTop({dim:{x,y,z}, panelGapMM:gap, pitchMM:pitch, order: top.order})
@@ -101,6 +133,14 @@ function UI(){
           <button onClick={()=>runTest("rgb_channels")}>RGB</button>
           <button onClick={()=>runTest("plane_z")}>Plane Z</button>
         </div>
+      </div>
+      <div style={{marginTop:8, display:'grid', gridTemplateColumns:'auto auto', gap:8}}>
+        <label><input type="checkbox"
+          checked={isotropicZ}
+          onChange={e=>setView({isotropicZ: e.target.checked})}/> Z uses pitch (isotropic)</label>
+        <label><input type="checkbox"
+          checked={normalizeCube}
+          onChange={e=>setView({normalizeCube: e.target.checked})}/> Normalize to cube</label>
       </div>
     </div>
   )
