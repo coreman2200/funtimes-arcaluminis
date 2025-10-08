@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -156,6 +158,7 @@ func main() {
 	mux.HandleFunc("/diag", state.HandleDiagWS)
 	mux.HandleFunc("/control", state.HandleControlWS)
 	mux.HandleFunc("/health", state.HandleHealth)
+	mux.Handle("/", spaHandler(filepath.Join("web", "dist"), "index.html"))
 
 	srv := &http.Server{
 		Addr:         *addr,
@@ -195,6 +198,29 @@ func withCORS(h http.Handler) http.Handler {
 			return
 		}
 		h.ServeHTTP(w, r)
+	})
+}
+
+// simple SPA handler that falls back to index.html
+func spaHandler(staticDir string, indexFile string) http.Handler {
+	fs := http.Dir(staticDir)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Clean path and try to open the file
+		upath := r.URL.Path
+		if upath == "/" {
+			upath = "/" + indexFile
+		}
+		f, err := fs.Open(strings.TrimPrefix(upath, "/"))
+		if err != nil {
+			// Fallback to index.html for client-side routes
+			f, err = fs.Open(indexFile)
+			if err != nil {
+				http.NotFound(w, r)
+				return
+			}
+		}
+		defer f.Close()
+		http.ServeContent(w, r, upath, time.Now(), f)
 	})
 }
 
