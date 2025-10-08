@@ -29,7 +29,7 @@ func main() {
 		panelGapMM = flag.Float64("panel-gap-mm", 50, "panel gap (mm) along Z")
 		fps        = flag.Int("fps", 60, "target frames per second")
 		brightness = flag.Float64("brightness", 0.8, "global brightness 0..1")
-		driver     = flag.String("driver", "sim", "driver: spi | pwm | sim")
+		driver     = flag.String("driver", "spi", "driver: spi | pwm | sim")
 		gpio       = flag.Int("gpio", 18, "PWM data pin (BCM number) for rpi_ws281x")
 		colorOrder = flag.String("color", "GRB", "LED color order (e.g. GRB, RGB)")
 		addr       = flag.String("addr", ":8080", "HTTP listen address")
