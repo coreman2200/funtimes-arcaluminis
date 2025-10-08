@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Arcaluminis Sequencer Program (seq.v1)",
+  "type": "object",
+  "properties": {
+    "version": { "const": "seq.v1" },
+    "loop": { "type": "boolean" },
+    "seed": { "type": "integer" },
+    "clips": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "renderer", "durationS"],
+        "properties": {
+          "name": { "type": "string" },
+          "renderer": { "type": "string" },
+          "preset": { "type": "string" },
+          "durationS": { "type": "number", "exclusiveMinimum": 0 },
+          "xFadeS": { "type": "number", "minimum": 0 }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "required": ["version", "clips"],
+  "additionalProperties": true
+}

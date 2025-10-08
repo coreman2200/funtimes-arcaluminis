@@ -1,0 +1,20 @@
+{
+  "version": "seq.v1",
+  "loop": false,
+  "seed": 1234,
+  "clips": [
+    {
+      "name": "Calm Dawn",
+      "renderer": "ocean",
+      "preset": "CalmDawn",
+      "durationS": 10.0,
+      "xFadeS": 2.0
+    },
+    {
+      "name": "Warp",
+      "renderer": "warp",
+      "preset": "LiminalBlue",
+      "durationS": 5.0
+    }
+  ]
+}
