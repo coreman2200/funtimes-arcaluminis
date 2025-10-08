@@ -259,6 +259,11 @@ func (s *State) saveConfig() {
 			WhiteCap:    0.85,
 			SoftStartMs: 800,
 		},
+		SPI: config.SPI{
+			Dev:     "/dev/spidev0.0",
+			SpeedHz: 2400000,
+			ResetUs: 300,
+		},
 	}
 	_ = config.Save(s.ConfigPath, cfg)
 }
