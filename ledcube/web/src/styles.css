@@ -1,0 +1,9 @@
+/* Move the drei <Stats /> panel to bottom-right */
+.stats-br {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  right: 8px !important;
+  bottom: 8px !important;
+  z-index: 1000;
+}
