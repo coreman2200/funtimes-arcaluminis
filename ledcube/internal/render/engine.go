@@ -13,10 +13,10 @@ type Driver interface {
 // Engine renders frames using an active Renderer, optional next Renderer for crossfades,
 // applies post-processing, then writes to the driver.
 type Engine struct {
-	Dim   Dimensions
-	LUT   []Vec3
-	Drv   Driver
-	Rsrc  *Resources
+	Dim  Dimensions
+	LUT  []Vec3
+	Drv  Driver
+	Rsrc *Resources
 
 	// active + next renderer and uniforms
 	RActive Renderer
@@ -30,7 +30,7 @@ type Engine struct {
 	Out  []Color // mixed + post
 
 	// crossfade
-	alpha float64 // 0..1
+	alpha  float64 // 0..1
 	fading bool
 
 	// timing
@@ -134,6 +134,15 @@ func (e *Engine) RenderOnce(t float64) error {
 
 	return nil
 }
+
+func (e *Engine) UseFilmicPost() {
+	e.SetPost(PostPipeline{
+		ToneMap: func(buf []Color) { FilmicToneMap(buf, e.UActive) },
+		Limiter: DefaultLimiter,
+	})
+}
+
+func (e *Engine) SetPost(p PostPipeline) { e.post = p }
 
 // ---- Hooks that match Sequencer expectations ----
 
