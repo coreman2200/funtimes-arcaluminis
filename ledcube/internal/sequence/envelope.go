@@ -1,6 +1,6 @@
 package sequence
 
-import "math"
+// import "math"
 
 // clamp01 clamps x in [0,1].
 func clamp01(x float64) float64 {
@@ -16,7 +16,7 @@ func clamp01(x float64) float64 {
 // smootherstep (cubic-ish) for ease="cubic"
 func smootherstep(x float64) float64 {
 	// 6x^5 - 15x^4 + 10x^3
-	return x*x*x*(x*(x*6-15)+10)
+	return x * x * x * (x*(x*6-15) + 10)
 }
 
 func easeApply(kind string, x float64) float64 {
@@ -25,7 +25,7 @@ func easeApply(kind string, x float64) float64 {
 		return x
 	case "smooth":
 		// classic smoothstep 3x^2 - 2x^3
-		return x*x*(3-2*x)
+		return x * x * (3 - 2*x)
 	case "cubic":
 		return smootherstep(x)
 	default:
