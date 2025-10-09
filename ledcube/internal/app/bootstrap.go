@@ -38,11 +38,21 @@ func applyPostDefaults(eng *render.Engine) {
 	}
 }
 
-func InitCore(ctx context.Context, hw HWConfig, startRenderer string, uniforms *render.Uniforms, resources *render.Resources) (*Core, error) {
+func InitCore(
+	ctx context.Context,
+	hw HWConfig,
+	startRenderer string,
+	uniforms *render.Uniforms,
+	resources *render.Resources,
+	registrar func(*render.Registry),
+) (*Core, error) {
 	// 1) Registry (register your real renderers elsewhere & import here)
 	reg := render.NewRegistry()
-	// reg.Register(ocean.New())
-	// reg.Register(warp.New())
+	// 👇 Register anything the caller wants (e.g., solid, grad)
+	if registrar != nil {
+		registrar(reg)
+	}
+
 	rr, ok := reg.Get(startRenderer)
 	if !ok {
 		// Fallback to any renderer in the registry
