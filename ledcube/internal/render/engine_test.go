@@ -53,7 +53,7 @@ func TestEngineRenderOnceAndCrossfade(t *testing.T) {
 	reg.Register(rb)
 
 	u := &Uniforms{GlobalBrightness: 1.0, TimeScale: 1.0, Params: map[string]float64{}, Bools: map[string]bool{}}
-	e, err := NewEngine(dim, lut, drv, ra, u, &Resources{})
+	e, err :=NewEngine(dim, lut, drv, ra, u, &Resources{})
 	if err != nil {
 		t.Fatalf("engine: %v", err)
 	}
