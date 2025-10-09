@@ -1,0 +1,13 @@
+{
+  "version": "2",
+  "name": "Arcaluminis",
+  "frontend:dir": "web",
+  "assetdir": "web/dist",
+  "wailsjsdir": "web",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:install": "npm install",
+  "frontend:dev:build": "npm run dev",
+  "frontend:dev:serverUrl": "http://127.0.0.1:5173",
+  "outputfilename": "arcaluminis"
+}
