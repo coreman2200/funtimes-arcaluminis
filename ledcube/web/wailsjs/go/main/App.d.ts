@@ -3,6 +3,8 @@
 
 export function ArmNext(arg1:string,arg2:string):Promise<void>;
 
+export function GetParams():Promise<Record<string, number>>;
+
 export function ListRenderers():Promise<Array<string>>;
 
 export function LoadProgram(arg1:string):Promise<void>;
@@ -16,3 +18,9 @@ export function SetBool(arg1:string,arg2:boolean):Promise<void>;
 export function SetParam(arg1:string,arg2:number):Promise<void>;
 
 export function SetRenderer(arg1:string,arg2:string):Promise<void>;
+
+export function UIRenderPreset(arg1:string,arg2:string):Promise<void>;
+
+export function UIResetAll():Promise<void>;
+
+export function UISetPreview(arg1:boolean):Promise<void>;

@@ -6,6 +6,10 @@ export function ArmNext(arg1, arg2) {
   return window['go']['main']['App']['ArmNext'](arg1, arg2);
 }
 
+export function GetParams() {
+  return window['go']['main']['App']['GetParams']();
+}
+
 export function ListRenderers() {
   return window['go']['main']['App']['ListRenderers']();
 }
@@ -32,4 +36,16 @@ export function SetParam(arg1, arg2) {
 
 export function SetRenderer(arg1, arg2) {
   return window['go']['main']['App']['SetRenderer'](arg1, arg2);
+}
+
+export function UIRenderPreset(arg1, arg2) {
+  return window['go']['main']['App']['UIRenderPreset'](arg1, arg2);
+}
+
+export function UIResetAll() {
+  return window['go']['main']['App']['UIResetAll']();
+}
+
+export function UISetPreview(arg1) {
+  return window['go']['main']['App']['UISetPreview'](arg1);
 }
