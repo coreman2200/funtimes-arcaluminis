@@ -1,5 +1,5 @@
 driver: spi
-color_order: GRB
+color_order: RGB
 brightness: 0.8
 fps: 60
 dim:
