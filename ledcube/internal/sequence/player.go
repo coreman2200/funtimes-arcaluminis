@@ -9,8 +9,8 @@ import (
 // NewPlayer constructs a Player with provided hooks.
 func NewPlayer(h Hooks) *Player {
 	return &Player{
-		State: Idle,
-		hooks: h,
+		State:      Idle,
+		hooks:      h,
 		armedIndex: -1,
 	}
 }
@@ -48,8 +48,14 @@ func (p *Player) Start() {
 
 // Pause pauses playback.
 func (p *Player) Pause() { p.State = Paused }
+
 // Resume resumes playback.
-func (p *Player) Resume() { if p.State == Paused { p.State = Running } }
+func (p *Player) Resume() {
+	if p.State == Paused {
+		p.State = Running
+	}
+}
+
 // Stop stops and resets to start.
 func (p *Player) Stop() {
 	p.State = Idle
@@ -79,7 +85,7 @@ func (p *Player) Seek(t float64) {
 	acc := 0.0
 	idx := 0
 	for i, c := range p.prog.Clips {
-		if t < acc + c.DurationS {
+		if t < acc+c.DurationS {
 			idx = i
 			break
 		}
@@ -142,6 +148,11 @@ func (p *Player) Tick(dt float64) {
 				alpha = 1
 			}
 			if p.hooks.SetCrossfade != nil && alpha != p.lastAlpha {
+				if alpha < 0 {
+					alpha = 0
+				} else if alpha > 1 {
+					alpha = 1
+				}
 				p.hooks.SetCrossfade(alpha)
 				p.lastAlpha = alpha
 			}
