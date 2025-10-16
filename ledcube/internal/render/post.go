@@ -58,8 +58,13 @@ func DefaultToneMap(buf []Color) {
 //   - "LimiterKnee" (fraction of budget where soft limiting begins; default 0.9)
 func DefaultLimiter(buf []Color, u *Uniforms) {
 	if u == nil {
-		return
-	}
+        return
+    }
+    // Preview disables limiter (new) + honor legacy flag
+    if u.Params["PreviewMode"] > 0.5 || u.Params["PreviewBypass"] > 0.5 {
+        return
+    }
+
 	// Params
 	whiteCap := 3.0
 	chanmA := 20.0

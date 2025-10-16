@@ -71,3 +71,4 @@ func (g *Grad) Render(dst []render.Color, pLUT []render.Vec3, _ render.Dimension
 		}
 	}
 }
+

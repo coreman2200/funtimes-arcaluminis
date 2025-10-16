@@ -2,6 +2,7 @@ package render
 
 import (
 	"errors"
+	"sync"
 	"time"
 )
 
@@ -17,6 +18,7 @@ type Engine struct {
 	LUT  []Vec3
 	Drv  Driver
 	Rsrc *Resources
+	mu   sync.RWMutex
 
 	// active + next renderer and uniforms
 	RActive Renderer
@@ -52,6 +54,8 @@ type PostPipeline struct {
 	ToneMap func([]Color)
 	Limiter func([]Color, *Uniforms)
 }
+
+func (e *Engine) SnapshotUniforms() *Uniforms { return e.snapshotActive() }
 
 // NewEngine allocates buffers and returns an Engine with defaults wired.
 func NewEngine(dim Dimensions, lut []Vec3, drv Driver, r Renderer, u *Uniforms, rsrc *Resources) (*Engine, error) {
@@ -97,27 +101,54 @@ func (e *Engine) RenderOnce(t float64) error {
 	}
 	start := time.Now()
 
+	// Read-only uniforms for this frame
+	uA := e.snapshotActive()
+	uN := e.snapshotNext()
+
 	// Render active
+	// --- Render & mix ---
 	if e.RActive != nil {
-		e.RActive.Render(e.BufA, e.LUT, e.Dim, t, e.UActive, e.Rsrc)
+		e.RActive.Render(e.BufA, e.LUT, e.Dim, t, uA, e.Rsrc)
 	}
 
-	// Render next if fading
-	if e.fading && e.RNext != nil {
-		e.RNext.Render(e.BufB, e.LUT, e.Dim, t, e.UNext, e.Rsrc)
-		// Mix A/B by alpha into Out
-		Mix(e.Out, e.BufA, e.BufB, e.alpha)
+	if e.RNext != nil {
+		// Only render B if we actually need it (alpha in (0,1))
+		if e.alpha > 0 && e.alpha < 1 {
+			e.RNext.Render(e.BufB, e.LUT, e.Dim, t, uN, e.Rsrc)
+			Mix(e.Out, e.BufA, e.BufB, e.alpha)
+		} else if e.alpha >= 1 {
+			// promote B -> A immediately at frame boundary
+			e.RActive = e.RNext
+			e.RNext = nil
+			e.fading = false
+			e.alpha = 0
+			copy(e.Out, e.BufA) // will be overwritten next frame by new A
+			// clear BufB to avoid ghosts
+			for i := range e.BufB {
+				e.BufB[i] = Color{}
+			}
+		} else {
+			// alpha == 0: ignore B
+			copy(e.Out, e.BufA)
+		}
 	} else {
+		// no B armed, render A only
 		copy(e.Out, e.BufA)
 	}
 
-	// Post
+	// --- Post ---
 	postStart := time.Now()
 	if e.post.ToneMap != nil {
-		e.post.ToneMap(e.Out)
+		e.post.ToneMap(e.Out) // exposure+tonemap+gamma for preview path
 	}
-	if e.post.Limiter != nil {
-		e.post.Limiter(e.Out, e.UActive)
+	preview := false
+	if uA != nil && uA.Params != nil {
+		if uA.Params["PreviewMode"] > 0.5 || uA.Params["PreviewBypass"] > 0.5 {
+			preview = true
+		}
+	}
+	if !preview && e.post.Limiter != nil {
+		e.post.Limiter(e.Out, uA)
 	}
 	e.Last.PostMS = float64(time.Since(postStart).Microseconds()) / 1000.0
 
@@ -131,7 +162,6 @@ func (e *Engine) RenderOnce(t float64) error {
 	// Metrics
 	e.Last.RenderMS = float64(time.Since(start).Microseconds()) / 1000.0
 	e.Last.TotalMS = e.Last.RenderMS
-
 	return nil
 }
 
@@ -143,6 +173,53 @@ func (e *Engine) UseFilmicPost() {
 }
 
 func (e *Engine) SetPost(p PostPipeline) { e.post = p }
+
+// snapshotActive copies UActive (maps included) so renderers read a stable view
+func (e *Engine) snapshotActive() *Uniforms {
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+	if e.UActive == nil {
+		return &Uniforms{Params: map[string]float64{}, Bools: map[string]bool{}}
+	}
+	out := &Uniforms{
+		GlobalBrightness: e.UActive.GlobalBrightness,
+		TimeScale:        e.UActive.TimeScale,
+		SunDir:           e.UActive.SunDir,
+		MoonDir:          e.UActive.MoonDir,
+		Params:           map[string]float64{},
+		Bools:            map[string]bool{},
+	}
+	for k, v := range e.UActive.Params {
+		out.Params[k] = v
+	}
+	for k, v := range e.UActive.Bools {
+		out.Bools[k] = v
+	}
+	return out
+}
+
+func (e *Engine) snapshotNext() *Uniforms {
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+	if e.UNext == nil {
+		return &Uniforms{Params: map[string]float64{}, Bools: map[string]bool{}}
+	}
+	out := &Uniforms{
+		GlobalBrightness: e.UNext.GlobalBrightness,
+		TimeScale:        e.UNext.TimeScale,
+		SunDir:           e.UNext.SunDir,
+		MoonDir:          e.UNext.MoonDir,
+		Params:           map[string]float64{},
+		Bools:            map[string]bool{},
+	}
+	for k, v := range e.UNext.Params {
+		out.Params[k] = v
+	}
+	for k, v := range e.UNext.Bools {
+		out.Bools[k] = v
+	}
+	return out
+}
 
 // ---- Hooks that match Sequencer expectations ----
 
@@ -176,21 +253,29 @@ func (e *Engine) ArmNext(name string, preset string, reg *Registry) error {
 		return errors.New("renderer not found: " + name)
 	}
 	e.RNext = rr
+
+	e.mu.RLock()
+	ua := e.UActive
+	e.mu.RUnlock()
+
 	if e.UNext == nil {
-		// clone a shallow copy of uniforms
 		e.UNext = &Uniforms{
-			GlobalBrightness: e.UActive.GlobalBrightness,
-			TimeScale:        e.UActive.TimeScale,
-			SunDir:           e.UActive.SunDir,
-			MoonDir:          e.UActive.MoonDir,
+			GlobalBrightness: ua.GlobalBrightness,
+			TimeScale:        ua.TimeScale,
+			SunDir:           ua.SunDir,
+			MoonDir:          ua.MoonDir,
 			Params:           map[string]float64{},
 			Bools:            map[string]bool{},
 		}
-		for k, v := range e.UActive.Params {
-			e.UNext.Params[k] = v
+		if ua.Params != nil {
+			for k, v := range ua.Params {
+				e.UNext.Params[k] = v
+			}
 		}
-		for k, v := range e.UActive.Bools {
-			e.UNext.Bools[k] = v
+		if ua.Bools != nil {
+			for k, v := range ua.Bools {
+				e.UNext.Bools[k] = v
+			}
 		}
 	}
 	if preset != "" {
@@ -201,30 +286,31 @@ func (e *Engine) ArmNext(name string, preset string, reg *Registry) error {
 }
 
 // SetCrossfade sets mix alpha 0..1 and enables/disables fading.
-func (e *Engine) SetCrossfade(alpha float64) {
-	if alpha <= 0 {
-		e.alpha = 0
-		e.fading = false
-	} else if alpha >= 1 {
-		e.alpha = 1
-		e.fading = false
-		// promote next -> active
-		if e.RNext != nil {
-			e.RActive = e.RNext
-			e.UActive = e.UNext
-		}
-		e.RNext = nil
-		// leave UNEXT as last copy; caller may reuse
-	} else {
-		e.alpha = alpha
-		e.fading = true
+// SetCrossfade clamps alpha and toggles fading appropriately.
+// If there is no RNext armed, alpha changes are ignored.
+func (e *Engine) SetCrossfade(a float64) {
+	if a < 0 {
+		a = 0
+	} else if a > 1 {
+		a = 1
 	}
+	// no next renderer => nothing to fade to; ignore
+	if e.RNext == nil {
+		e.fading = false
+		e.alpha = 0
+		return
+	}
+	e.alpha = a
+	// only mix when we truly are in-between
+	e.fading = (a > 0 && a < 1)
 }
 
 // SetParam updates active uniforms.
 func (e *Engine) SetParam(name string, v float64) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
 	if e.UActive == nil {
-		return
+		e.UActive = &Uniforms{}
 	}
 	if e.UActive.Params == nil {
 		e.UActive.Params = map[string]float64{}
@@ -232,10 +318,11 @@ func (e *Engine) SetParam(name string, v float64) {
 	e.UActive.Params[name] = v
 }
 
-// SetBool updates active uniforms.
 func (e *Engine) SetBool(name string, b bool) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
 	if e.UActive == nil {
-		return
+		e.UActive = &Uniforms{}
 	}
 	if e.UActive.Bools == nil {
 		e.UActive.Bools = map[string]bool{}
