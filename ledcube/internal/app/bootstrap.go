@@ -77,6 +77,11 @@ func InitCore(
 	// Safer than touching the map directly:
 	applyPostDefaults(eng)
 
+	// Desktop preview defaults: limiter OFF, filmic ON, gamma ON
+	eng.SetParam("PreviewMode", 1)   // limiter off, tonemap on
+	eng.SetParam("ExposureEV", 1.5)  // slightly less hot than 2
+	eng.SetParam("OutputGamma", 2.2)
+
 	// 5) Sequencer wiring (hooks → engine)
 	hooks := sequence.Hooks{
 		SetRenderer:  func(name, preset string) { _ = eng.SetRenderer(name, preset, reg) },
