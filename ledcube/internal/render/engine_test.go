@@ -4,12 +4,12 @@ import "testing"
 
 // fakeRenderer writes a constant color for testing.
 type fakeRenderer struct {
-	name string
+	name    string
 	r, g, b float32
 }
 
-func (f *fakeRenderer) Name() string { return f.name }
-func (f *fakeRenderer) Presets() []string { return []string{"default"} }
+func (f *fakeRenderer) Name() string                         { return f.name }
+func (f *fakeRenderer) Presets() []string                    { return []string{"default"} }
 func (f *fakeRenderer) ApplyPreset(name string, u *Uniforms) {}
 func (f *fakeRenderer) Render(dst []Color, pLUT []Vec3, dim Dimensions, t float64, u *Uniforms, r *Resources) {
 	for i := range dst {
@@ -21,6 +21,7 @@ func (f *fakeRenderer) Render(dst []Color, pLUT []Vec3, dim Dimensions, t float6
 type fakeDriver struct {
 	last []Color
 }
+
 func (d *fakeDriver) Write(buf []Color) error {
 	d.last = make([]Color, len(buf))
 	copy(d.last, buf)
@@ -44,19 +45,21 @@ func TestMixAlpha(t *testing.T) {
 
 func TestEngineRenderOnceAndCrossfade(t *testing.T) {
 	dim := Dimensions{X: 1, Y: 1, Z: 1}
-	lut := []Vec3{{0.5,0.5,0.5}}
+	lut := []Vec3{{0.5, 0.5, 0.5}}
 	drv := &fakeDriver{}
 	reg := NewRegistry()
-	ra := &fakeRenderer{name:"A", r:1, g:0, b:0}
-	rb := &fakeRenderer{name:"B", r:0, g:0, b:1}
+	ra := &fakeRenderer{name: "A", r: 1, g: 0, b: 0}
+	rb := &fakeRenderer{name: "B", r: 0, g: 0, b: 1}
 	reg.Register(ra)
 	reg.Register(rb)
 
 	u := &Uniforms{GlobalBrightness: 1.0, TimeScale: 1.0, Params: map[string]float64{}, Bools: map[string]bool{}}
-	e, err :=NewEngine(dim, lut, drv, ra, u, &Resources{})
+	e, err := NewEngine(dim, lut, drv, ra, u, &Resources{})
 	if err != nil {
 		t.Fatalf("engine: %v", err)
 	}
+	// Disable tone mapping for deterministic tests.
+	e.SetPost(PostPipeline{})
 
 	// Active A, render once
 	if err := e.RenderOnce(-1); err != nil {

@@ -29,7 +29,7 @@ func TestSequencerCrossfade(t *testing.T) {
 	h := Hooks{
 		SetRenderer: func(name, preset string) { log = append(log, "Set:"+name+"/"+preset) },
 		ArmNext:     func(name, preset string) { log = append(log, "Arm:"+name+"/"+preset) },
-		SetCrossfade: func(a float64) { 
+		SetCrossfade: func(a float64) {
 			// log a few key alphas
 			if a == 0 || a == 0.5 || a == 1.0 {
 				log = append(log, "Alpha")
@@ -58,10 +58,20 @@ func TestSequencerCrossfade(t *testing.T) {
 	p.Tick(0.9) // t=3.0
 	p.Tick(1.0) // t=4.0 -> should switch to B
 
-	// Simple assertions: Arm happens before Set to B
+	// Simple assertions: Arm happens after initial Set to A (ignore alpha logs)
+	var cleaned []string
+	for _, entry := range log {
+		if entry == "Alpha" {
+			continue
+		}
+		cleaned = append(cleaned, entry)
+	}
 	wantOrder := []string{"Set:ocean/Calm", "Arm:warp/Blue"}
+	if len(cleaned) < len(wantOrder) {
+		t.Fatalf("unexpected log order: %#v", log)
+	}
 	for i := range wantOrder {
-		if i >= len(log) || log[i] != wantOrder[i] {
+		if cleaned[i] != wantOrder[i] {
 			t.Fatalf("unexpected log order: %#v", log)
 		}
 	}

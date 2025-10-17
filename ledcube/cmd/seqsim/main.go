@@ -1,3 +1,5 @@
+//go:build ignore
+
 package main
 
 import (
@@ -9,7 +11,7 @@ import (
 	"os"
 	"time"
 
-	"internal/sequence"
+	"github.com/coreman2200/funtimes-arcaluminis/ledcube/internal/sequence"
 )
 
 func main() {

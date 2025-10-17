@@ -36,6 +36,7 @@ func (a *App) GetParams() map[string]float64 {
 	for k, v := range u.Params {
 		out[k] = v
 	}
+	log.Printf("GetParams -> %+v\n", out)
 	return out
 }
 

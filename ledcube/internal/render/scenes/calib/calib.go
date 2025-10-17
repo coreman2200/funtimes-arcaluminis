@@ -21,6 +21,23 @@ func (r *Renderer) Presets() []string { return []string{"PanelChanSweep"} }
 // Satisfy your interface
 func (r *Renderer) ApplyPreset(p string, u *render.Uniforms) {
 	r.preset = p
+	if u == nil {
+		return
+	}
+	ensure(u, map[string]float64{
+		"PanelAxis":     2,
+		"FlipX":         0,
+		"FlipY":         0,
+		"FlipZ":         0,
+		"Gamma":         1.7,
+		"LRGamma":       1.4,
+		"TopWhitePow":   2.0,
+		"TopWhiteMix":   0.6,
+		"BaseIntensity": 0.17,
+		"RightFloor":    0.0,
+		"Saturation":    1.0,
+		"PreviewScale":  0.65,
+	})
 }
 
 // Optional: advertise tweakable knobs
@@ -36,6 +53,7 @@ func (r *Renderer) Params() map[string]float64 {
 		"BaseIntensity": 1.0, // overall intensity (pre-post)
 		"RightFloor":    0.0, // minimum brightness at far-right (0..1)
 		"Saturation":    1.0, // 0 = grayscale, 1 = full RGB
+		"PreviewScale":  0.65,
 	}
 }
 
@@ -71,6 +89,17 @@ func clamp01(v float64) float64 {
 	return v
 }
 
+func ensure(u *render.Uniforms, kv map[string]float64) {
+	if u.Params == nil {
+		u.Params = map[string]float64{}
+	}
+	for k, v := range kv {
+		if _, ok := u.Params[k]; !ok {
+			u.Params[k] = v
+		}
+	}
+}
+
 // Render fills 'dst' (one color per voxel). 'pos' is provided by the engine but we don't need it here.
 // We iterate XYZ with x-fastest so the linear index matches your preview + VoxelCube.
 func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimensions, _t float64, u *render.Uniforms, _ *render.Resources) {
@@ -86,6 +115,18 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 	gamma := pget(u, "Gamma", 1.8)
 	if gamma <= 0 {
 		gamma = 1
+	}
+	lrPow := pget(u, "LRGamma", 1.2)
+	topPow := pget(u, "TopWhitePow", 0.6)
+	topMix := clamp01(pget(u, "TopWhiteMix", 1.0))
+	rightFloor := clamp01(pget(u, "RightFloor", 0.0))
+	baseInt := clamp01(pget(u, "BaseIntensity", 1.0))
+	sat := clamp01(pget(u, "Saturation", 1.0))
+	preview := false
+	if u != nil && u.Params != nil {
+		if u.Params["PreviewMode"] > 0.5 || u.Params["PreviewBypass"] > 0.5 {
+			preview = true
+		}
 	}
 
 	norm := func(i, n int) float64 {
@@ -121,14 +162,6 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 					panel = vy
 				}
 
-				// knobs
-				lrPow := pget(u, "LRGamma", 1.2)
-				topPow := pget(u, "TopWhitePow", 0.6)
-				topMix := clamp01(pget(u, "TopWhiteMix", 1.0))
-				rightFloor := clamp01(pget(u, "RightFloor", 0.0))
-				baseInt := clamp01(pget(u, "BaseIntensity", 1.0))
-				sat := clamp01(pget(u, "Saturation", 1.0))
-
 				// base channel per panel
 				ch := panel % 3
 				r0, g0, b0 := 0.0, 0.0, 0.0
@@ -143,13 +176,17 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 
 				// Left→Right: darken with curve + floor
 				nx := norm(vx, X)
-				lr := math.Pow(1.0-nx, lrPow)
+				lr := 1.0 - math.Pow(nx, lrPow)
 				lr = rightFloor + (1.0-rightFloor)*lr
 
 				// Bottom→Top: blend toward white with curve and strength
 				ny := norm(vy, Y)
-				bt := math.Pow(ny, topPow) // faster toward 1 near top
-				bt *= topMix               // how hard to pull to white
+				bt := math.Pow(ny, topPow)
+				if vy == Y-1 {
+					bt = 1.0
+				} else {
+					bt *= topMix // how hard to pull to white for mid rows
+				}
 
 				// start with a single channel and apply LR
 				R := r0 * lr
@@ -170,33 +207,38 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 					B = Yl + (B-Yl)*sat
 				}
 
-				// intensity before post
+				// intensity before post (linear)
 				R *= baseInt
 				G *= baseInt
 				B *= baseInt
 
-				// preview gamma (keep as before)
-				ig := 1.0 / math.Max(1e-6, pget(u, "Gamma", 1.8))
-				R = math.Pow(clamp01(R), ig)
-				G = math.Pow(clamp01(G), ig)
-				B = math.Pow(clamp01(B), ig)
+				// clamp to linear 0..1 prior to downstream handling
+				R = clamp01(R)
+				G = clamp01(G)
+				B = clamp01(B)
 
-				// apply universal knobs (if your renderer didn’t already)
-				baseI := pget(u, "BaseIntensity", 1.0)
-				prevGamma := pget(u, "PreviewGamma", 1.6)
+				var outR, outG, outB float64
+				if preview {
+					scale := clamp01(pget(u, "PreviewScale", 0.65))
+					scaledR := clamp01(R * scale)
+					scaledG := clamp01(G * scale)
+					scaledB := clamp01(B * scale)
+					if y == Y-1 {
+						scaledR, scaledG, scaledB = 1, 1, 1
+					}
+					outR = scaledR
+					outG = scaledG
+					outB = scaledB
+				} else {
+					ig := 1.0 / math.Max(1e-6, gamma)
+					outR = math.Pow(R, ig)
+					outG = math.Pow(G, ig)
+					outB = math.Pow(B, ig)
+				}
 
-				Yl := 0.2126*R + 0.7152*G + 0.0722*B
-				R = Yl + (R-Yl)*sat
-				G = Yl + (G-Yl)*sat
-				B = Yl + (B-Yl)*sat
-
-				R = math.Pow(clamp01(R*baseI), 1.0/math.Max(1e-6, prevGamma))
-				G = math.Pow(clamp01(G*baseI), 1.0/math.Max(1e-6, prevGamma))
-				B = math.Pow(clamp01(B*baseI), 1.0/math.Max(1e-6, prevGamma))
-
-				dst[i].R = float32(clamp01(R))
-				dst[i].G = float32(clamp01(G))
-				dst[i].B = float32(clamp01(B))
+				dst[i].R = float32(outR)
+				dst[i].G = float32(outG)
+				dst[i].B = float32(outB)
 
 				i++
 			}

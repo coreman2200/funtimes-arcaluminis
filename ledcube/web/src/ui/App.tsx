@@ -632,6 +632,8 @@ function PreviewClient(){
           console.log('[preview sample RGB]', {p0, p1, p2});
         }
 
+        const snapshot = {dim:{x:X,y:Y,z:Z}, rgb: dst.slice(0)}
+        ;(window as any).__cubePreview = snapshot
         setTop({ dim:{x:X,y:Y,z:Z}, panelGapMM:25, pitchMM:17.6, order: undefined })
         setColors(dst)
         setDbg(d=>({hits:d.hits+1, x:X,y:Y,z:Z, len:dst.length, sum, r:Rh, g:Gh, b:Bh}))
@@ -884,7 +886,7 @@ function CalibPanel(){
 export default function App(){
   return (
     <div style={{width:'100vw', height:'100vh'}}>
-      <Canvas camera={{position:[1.2,1.2,1.2], fov:55}}>
+      <Canvas camera={{position:[1.2,1.2,1.2], fov:55}} style={{background:'#1a1a1a'}}>
         <ambientLight />
         <VoxelCube/>
         <OrbitControls makeDefault />
@@ -900,4 +902,3 @@ export default function App(){
     </div>
   )
 }
-

@@ -217,16 +217,11 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 					// apply universal knobs (if your renderer didn’t already)
 					sat := clamp01(pget(u, "Saturation", 1.0))
 					baseI := pget(u, "BaseIntensity", 1.0)
-					prevGamma := pget(u, "PreviewGamma", 1.6)
 
 					Yl := 0.2126*R + 0.7152*G + 0.0722*B
 					R = Yl + (R-Yl)*sat
 					G = Yl + (G-Yl)*sat
 					B = Yl + (B-Yl)*sat
-
-					R = math.Pow(clamp01(R*baseI), 1.0/math.Max(1e-6, prevGamma))
-					G = math.Pow(clamp01(G*baseI), 1.0/math.Max(1e-6, prevGamma))
-					B = math.Pow(clamp01(B*baseI), 1.0/math.Max(1e-6, prevGamma))
 
 					// surface highlight near h
 					nearSurf := clamp(1.0-math.Abs(float64(y)-h), 0, 1) // use true h
@@ -242,19 +237,22 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 					}
 					// If the engine Preview pipeline will do tonemap+gamma, avoid double gamma here:
 					preview := u != nil && u.Params != nil && (u.Params["PreviewMode"] > 0.5 || u.Params["PreviewBypass"] > 0.5)
+					var outR, outG, outB float64
 					if preview {
 						// write scene-linear 0..1 here; let post handle exposure+tonemap+gamma
-						dst[i].R = float32(clamp01(R * baseI))
-						dst[i].G = float32(clamp01(G * baseI))
-						dst[i].B = float32(clamp01(B * baseI))
+						outR = clamp01(R * baseI)
+						outG = clamp01(G * baseI)
+						outB = clamp01(B * baseI)
 					} else {
 						// (LED or non-preview path): keep your original renderer gamma if you need it
-						ig := 1.0 / math.Max(1e-6, pget(u, "PreviewGamma", 1.6))
-						dst[i].R = float32(math.Pow(clamp01(R*baseI), ig))
-						dst[i].G = float32(math.Pow(clamp01(G*baseI), ig))
-						dst[i].B = float32(math.Pow(clamp01(B*baseI), ig))
+						ig := 1.0 / math.Max(1e-6, prevGamma)
+						outR = math.Pow(clamp01(R*baseI), ig)
+						outG = math.Pow(clamp01(G*baseI), ig)
+						outB = math.Pow(clamp01(B*baseI), ig)
 					}
-					apply(dst[i:], R, G, B, baseI, prevGamma)
+					dst[i].R = float32(outR)
+					dst[i].G = float32(outG)
+					dst[i].B = float32(outB)
 				} else {
 					// SKY voxel
 					yn := float64(y) / float64(Y-1) // 0..1 bottom→top
@@ -267,19 +265,22 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 					}
 					// If the engine Preview pipeline will do tonemap+gamma, avoid double gamma here:
 					preview := u != nil && u.Params != nil && (u.Params["PreviewMode"] > 0.5 || u.Params["PreviewBypass"] > 0.5)
+					var outR, outG, outB float64
 					if preview {
 						// write scene-linear 0..1 here; let post handle exposure+tonemap+gamma
-						dst[i].R = float32(clamp01(R * baseI))
-						dst[i].G = float32(clamp01(G * baseI))
-						dst[i].B = float32(clamp01(B * baseI))
+						outR = clamp01(R * baseI)
+						outG = clamp01(G * baseI)
+						outB = clamp01(B * baseI)
 					} else {
 						// (LED or non-preview path): keep your original renderer gamma if you need it
-						ig := 1.0 / math.Max(1e-6, pget(u, "PreviewGamma", 1.6))
-						dst[i].R = float32(math.Pow(clamp01(R*baseI), ig))
-						dst[i].G = float32(math.Pow(clamp01(G*baseI), ig))
-						dst[i].B = float32(math.Pow(clamp01(B*baseI), ig))
+						ig := 1.0 / math.Max(1e-6, prevGamma)
+						outR = math.Pow(clamp01(R*baseI), ig)
+						outG = math.Pow(clamp01(G*baseI), ig)
+						outB = math.Pow(clamp01(B*baseI), ig)
 					}
-					apply(dst[i:], R, G, B, baseI, prevGamma)
+					dst[i].R = float32(outR)
+					dst[i].G = float32(outG)
+					dst[i].B = float32(outB)
 				}
 				i++
 			}
@@ -441,16 +442,6 @@ func mix3n(a, b [3]float64, t float64) [3]float64 {
 		a[1] + (b[1]-a[1])*t,
 		a[2] + (b[2]-a[2])*t,
 	}
-}
-
-func apply(dst []render.Color, R, G, B, baseI, gamma float64) {
-	// preview lift + gamma; engine post will still apply Filmic if enabled
-	R = math.Pow(clamp(R*baseI, 0, 1), 1.0/math.Max(1e-6, gamma))
-	G = math.Pow(clamp(G*baseI, 0, 1), 1.0/math.Max(1e-6, gamma))
-	B = math.Pow(clamp(B*baseI, 0, 1), 1.0/math.Max(1e-6, gamma))
-	dst[0].R = float32(R)
-	dst[0].G = float32(G)
-	dst[0].B = float32(B)
 }
 
 func clamp(x, a, b float64) float64 {

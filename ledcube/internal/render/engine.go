@@ -122,7 +122,16 @@ func (e *Engine) RenderOnce(t float64) error {
 			e.RNext = nil
 			e.fading = false
 			e.alpha = 0
-			copy(e.Out, e.BufA) // will be overwritten next frame by new A
+			if uN != nil {
+				e.mu.Lock()
+				e.UActive = uN
+				e.UNext = nil
+				e.mu.Unlock()
+			}
+			if e.RActive != nil {
+				e.RActive.Render(e.BufA, e.LUT, e.Dim, t, uN, e.Rsrc)
+			}
+			copy(e.Out, e.BufA)
 			// clear BufB to avoid ghosts
 			for i := range e.BufB {
 				e.BufB[i] = Color{}
