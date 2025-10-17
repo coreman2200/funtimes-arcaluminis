@@ -28,6 +28,18 @@ func (r *Renderer) Presets() []string {
 	return []string{"CalmDawn", "SunnyDay", "Sunset", "NightStorm"}
 }
 
+func assign(u *render.Uniforms, kv map[string]float64) {
+	if u == nil {
+		return
+	}
+	if u.Params == nil {
+		u.Params = map[string]float64{}
+	}
+	for k, v := range kv {
+		u.Params[k] = v
+	}
+}
+
 func (r *Renderer) ApplyPreset(p string, u *render.Uniforms) {
 	r.preset = p
 	if u == nil {
@@ -36,28 +48,28 @@ func (r *Renderer) ApplyPreset(p string, u *render.Uniforms) {
 	// sensible defaults per preset
 	switch p {
 	case "CalmDawn":
-		ensure(u, map[string]float64{
+		assign(u, map[string]float64{
 			"TideAmp": 0.2, "TidePeriodS": 120.0, "WaveSpeed": 0.9, "Damping": 0.015, "Wind": 0.05,
 			"Foaminess": 0.15, "Choppiness": 0.35, "SkySat": 0.9, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.58, "WaterAbsorb": 0.20, "BaseIntensity": 1.0, "PreviewGamma": 1.6,
 			"SkyCycleScale": 0.0,
 		})
 	case "SunnyDay":
-		ensure(u, map[string]float64{
+		assign(u, map[string]float64{
 			"TideAmp": 0.25, "TidePeriodS": 180.0, "WaveSpeed": 1.2, "Damping": 0.01, "Wind": 0.1,
 			"Foaminess": 0.18, "Choppiness": 0.5, "SkySat": 1.0, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.55, "WaterAbsorb": 0.15, "BaseIntensity": 1.1, "PreviewGamma": 1.6,
 			"SkyCycleScale": 0.0,
 		})
 	case "Sunset":
-		ensure(u, map[string]float64{
+		assign(u, map[string]float64{
 			"TideAmp": 0.22, "TidePeriodS": 180.0, "WaveSpeed": 1.0, "Damping": 0.012, "Wind": 0.08,
 			"Foaminess": 0.14, "Choppiness": 0.45, "SkySat": 1.1, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.53, "WaterAbsorb": 0.18, "BaseIntensity": 1.0, "PreviewGamma": 1.7,
 			"SkyCycleScale": 0.0,
 		})
 	case "NightStorm":
-		ensure(u, map[string]float64{
+		assign(u, map[string]float64{
 			"TideAmp": 0.3, "TidePeriodS": 150.0, "WaveSpeed": 1.3, "Damping": 0.02, "Wind": 0.35,
 			"Foaminess": 0.30, "Choppiness": 0.8, "SkySat": 0.7, "DayPeriodS": 240.0, "Storminess": 0.8,
 			"LightningRate": 0.15, "WaterHue": 0.60, "WaterAbsorb": 0.25, "BaseIntensity": 1.0, "PreviewGamma": 1.6,
