@@ -50,7 +50,7 @@ func (r *Renderer) Params() map[string]float64 {
 		"LRGamma":       1.2, // left→right darkening curve ( >1 steeper right edge )
 		"TopWhitePow":   0.6, // bottom→top blend curve ( <1 quicker toward white )
 		"TopWhiteMix":   1.0, // 0..1 how hard to pull toward white at top
-		"BaseIntensity": 1.0, // overall intensity (pre-post)
+		"BaseIntensity": 0.17, // overall intensity (pre-post)
 		"RightFloor":    0.0, // minimum brightness at far-right (0..1)
 		"Saturation":    1.0, // 0 = grayscale, 1 = full RGB
 		"PreviewScale":  0.65,
