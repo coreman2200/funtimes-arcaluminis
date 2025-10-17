@@ -40,24 +40,28 @@ func (r *Renderer) ApplyPreset(p string, u *render.Uniforms) {
 			"TideAmp": 0.2, "TidePeriodS": 120.0, "WaveSpeed": 0.9, "Damping": 0.015, "Wind": 0.05,
 			"Foaminess": 0.15, "Choppiness": 0.35, "SkySat": 0.9, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.58, "WaterAbsorb": 0.20, "BaseIntensity": 1.0, "PreviewGamma": 1.6,
+			"SkyCycleScale": 0.0,
 		})
 	case "SunnyDay":
 		ensure(u, map[string]float64{
 			"TideAmp": 0.25, "TidePeriodS": 180.0, "WaveSpeed": 1.2, "Damping": 0.01, "Wind": 0.1,
 			"Foaminess": 0.18, "Choppiness": 0.5, "SkySat": 1.0, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.55, "WaterAbsorb": 0.15, "BaseIntensity": 1.1, "PreviewGamma": 1.6,
+			"SkyCycleScale": 0.0,
 		})
 	case "Sunset":
 		ensure(u, map[string]float64{
 			"TideAmp": 0.22, "TidePeriodS": 180.0, "WaveSpeed": 1.0, "Damping": 0.012, "Wind": 0.08,
 			"Foaminess": 0.14, "Choppiness": 0.45, "SkySat": 1.1, "DayPeriodS": 240.0, "Storminess": 0.0,
 			"WaterHue": 0.53, "WaterAbsorb": 0.18, "BaseIntensity": 1.0, "PreviewGamma": 1.7,
+			"SkyCycleScale": 0.0,
 		})
 	case "NightStorm":
 		ensure(u, map[string]float64{
 			"TideAmp": 0.3, "TidePeriodS": 150.0, "WaveSpeed": 1.3, "Damping": 0.02, "Wind": 0.35,
 			"Foaminess": 0.30, "Choppiness": 0.8, "SkySat": 0.7, "DayPeriodS": 240.0, "Storminess": 0.8,
 			"LightningRate": 0.15, "WaterHue": 0.60, "WaterAbsorb": 0.25, "BaseIntensity": 1.0, "PreviewGamma": 1.6,
+			"SkyCycleScale": 0.0,
 		})
 	}
 }
@@ -72,6 +76,7 @@ func (r *Renderer) Params() map[string]float64 {
 		"HMax":     0.5,  // hard cap for |H| to avoid runaway
 		// orientation helpers if needed
 		"FlipX": 0, "FlipZ": 1,
+		"SkyCycleScale": 0.0,
 	}
 }
 
@@ -104,7 +109,15 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 		return
 	}
 
-	phaseT := t * pget(u, "TimeScale", 1.0)
+	timeScale := pget(u, "TimeScale", 1.0)
+	if timeScale < 0 {
+		timeScale = 0
+	}
+	phaseT := t * timeScale
+	simScale := timeScale
+	if simScale < 0.01 {
+		simScale = 0.01
+	}
 
 	// ensure state
 	if !r.initd || r.X != X || r.Z != Z {
@@ -143,7 +156,7 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 	dt := clamp(r.prevT, 0, 1e9)
 	_ = dt
 	// fixed timestep ~16ms for stability, decoupled from host t
-	r.stepSim(0.016, waveSpeed, damping, wind, choppy)
+	r.stepSim(0.016, waveSpeed*simScale, damping, wind*simScale, choppy)
 
 	// --- zero-mean & limit H to prevent drift ---
 	n := r.X * r.Z
@@ -168,12 +181,16 @@ func (r *Renderer) Render(dst []render.Color, _ []render.Vec3, dim render.Dimens
 		}
 	}
 
-	tide := tideAmp * math.Sin(2*math.Pi*t/math.Max(1e-6, tidePeriod))
+	tide := tideAmp * math.Sin(2*math.Pi*phaseT/math.Max(1e-6, tidePeriod))
 	// clamp the final mean sea level to [0,1]
 	baseLevel := clamp01(sea + tide)
 
 	// sun angle for sky gradient
-	dayPhase := math.Mod(phaseT/dayPeriod, 1.0)
+	skyCycle := pget(u, "SkyCycleScale", 0.0)
+	dayPhase := 0.0
+	if skyCycle > 0 {
+		dayPhase = math.Mod((t*skyCycle)/math.Max(1e-6, dayPeriod), 1.0)
+	}
 	sunElev := math.Sin(2 * math.Pi * dayPhase) // -1..1
 
 	// lightning flash
